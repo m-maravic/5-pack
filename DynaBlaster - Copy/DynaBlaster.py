@@ -1,19 +1,19 @@
 import sys
-from PyQt5.QtWdgets import*
+from PyQt5.QtWidgets import*
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 
 class ViewWindow (QWidget):
-    def _init_(self):
-        super()._init_()
-
+    def __init__(self):
+        super().__init__()
         self.initUI()
+        self.show()
 
     def initUI(self):
         self.resize(800,800)
-        self.setWindowlitle('Dyna Blaster ')
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowTitle('Dyna Blaster')
+        self.setWindowIcon(QIcon('projekat_slika1.jpg'))
 
 
         palette = QPalette()
@@ -23,9 +23,16 @@ class ViewWindow (QWidget):
         self.show()
 
     def closeEvent(self,event):
+        reply = QMessageBox.question(self, 'Dyna Blaster', 'Are you sure you want to exit?',QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
-        reply =QMessageBox.question(self, 'Dyna Blaster')
-          if reply == QMessageBox.Yes:
-              event.accept()
-         else
-              event.ignore()
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
+
+
+if  __name__ =='__main__':
+    app=QApplication(sys.argv)
+    ex= ViewWindow()
+    sys.exit(app.exec_())
