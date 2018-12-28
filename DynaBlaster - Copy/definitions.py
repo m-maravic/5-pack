@@ -17,18 +17,18 @@ monsterl3y=random.randint(0,3)"""
 def make_matrix():#,player3Lives,player4Lives,player5Lives
     Matrix = [[0 for x in range(width)] for y in range(height)]
 #okvirni zidovi
-    for u in range(0,width,1):#x se menja y fiksirano
+    for u in range(0,width,1):#gornja paralelna sa podlogom-x se menja
         Matrix[u][0]=2
-    for u1 in range(0,width-1):#y se menja x fikson
+    for u1 in range(0,height):#leva y se menja
         Matrix[0][u1]=2
-    for u2 in range(width):
-        Matrix[u2][width-1] = 2
-    for u3 in range(width):
-        Matrix[width-2][u3] = 2
+    for u2 in range(width):#donja-x se menja
+        Matrix[u2][height-1] = 2
+    for u3 in range(height):# desna -y se menja
+        Matrix[width-1][u3] = 2
 
     step=2
-    for t in range(2,width-3,step):
-        for t1 in range(2,width,step):
+    for t in range(2,width-2,step):
+        for t1 in range(2,height,step):
             Matrix[t][t1]=2
     return  Matrix
 

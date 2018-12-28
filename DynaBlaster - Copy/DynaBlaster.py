@@ -46,14 +46,14 @@ class ViewWindow (QWidget):
 
     def drawBrushes(self,qp):
         nullbrush = QBrush()
-        emptybrush = QBrush(Qt.white)
+        emptybrush = QBrush(Qt.darkGreen)
         wallImage = QImage("IndestructableWall.jpg")
         wallbrush = QBrush()
         wallbrush.setTextureImage(wallImage)
 
         w=10
         h=10
-        offset=50
+        offset=30
         for i in range(0,height):
             for j in range(0,width):
                 if(Kind(Matrix[i][j])==Kind.Empty):
@@ -61,7 +61,7 @@ class ViewWindow (QWidget):
                 elif(Kind(Matrix[i][j])==Kind.IndestructibleWall):
                     qp.setBrush(wallbrush)
                     #print("Aa")
-                qp.drawRect(w, h, 50, 50)
+                qp.drawRect(w, h, 30, 30)
                 w = w + offset
             w = 10
             h = h + offset
