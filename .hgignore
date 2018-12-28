@@ -1,0 +1,4 @@
+syntax: glob
+DynaBlaster - Copy/.idea/*
+DynaBlaster - Copy/__pycache__/*
+DynaBlaster - Copy/venv/*
