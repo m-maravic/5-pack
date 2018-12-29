@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel
 from PyQt5.QtGui import QPainter, QBrush, QImage, QFont
 from PyQt5.QtCore import Qt
 from definitions import *
+from wall import *
 
 from PyQt5.QtWidgets import*
 from PyQt5.QtGui import *
@@ -12,6 +13,8 @@ from PyQt5.QtGui import QPainter, QBrush, QImage, QFont
 
 #Matrix = [[0 for x in range(width)] for y in range(height)]
 Matrix=make_matrix()
+#Matrix=makeDestructableWall()
+
 class ViewWindow (QWidget):
     def __init__(self):
         super().__init__()
@@ -65,9 +68,9 @@ class ViewWindow (QWidget):
 
 
 #iscrtevanje na tabli
-        w=10
-        h=10
-        offset=30
+        w=0
+        h=0
+        offset=40
         for i in range(0,height):
             for j in range(0,width):
                 if(Kind(Matrix[i][j])==Kind.Empty):
@@ -76,11 +79,9 @@ class ViewWindow (QWidget):
                     qp.setBrush(wallbrush)
                 elif(Kind(Matrix[i][j])==Kind.Wall):
                     qp.setBrush(wallbrush2)
-                elif(Kind(Matrix[i][j])==Kind.Bomb):
-                    qp.setBrush(bombBrush)
-                qp.drawRect(w, h, 30, 30)
+                qp.drawRect(w, h, 40, 40)
                 w = w + offset
-            w = 10
+            w = 0
             h = h + offset
 
 if  __name__ =='__main__':

@@ -30,6 +30,13 @@ def make_matrix():#,player3Lives,player4Lives,player5Lives
     for t in range(2,width-2,step):
         for t1 in range(2,height,step):
             Matrix[t][t1]=2
+    for r in range((round(133 / 1.3))):
+        m = random.randint(0, 13)
+        n = random.randint(0, 13)
+        if (Kind(Matrix[m][n]) == Kind.Empty):
+            Matrix[m][n] = Kind.Wall
+
+
     return  Matrix
 
 
