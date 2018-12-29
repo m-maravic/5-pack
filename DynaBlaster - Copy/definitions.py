@@ -1,6 +1,6 @@
 from enum import Enum
 import  random
-
+#vec ima dve klase moze samo jos jedna pazite sta stavljete
 width=15
 height=15
 

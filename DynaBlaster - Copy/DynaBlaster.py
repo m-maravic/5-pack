@@ -51,6 +51,20 @@ class ViewWindow (QWidget):
         wallbrush = QBrush()
         wallbrush.setTextureImage(wallImage)
 
+        wallImage2 = QImage("Wall.jpg")
+        wallbrush2 = QBrush()
+        wallbrush2.setTextureImage(wallImage2)
+
+        bombImage = QImage("Bomb.jpg")
+        bombBrush = QBrush()
+        bombBrush.setTextureImage(bombImage)
+
+
+
+
+
+
+#iscrtevanje na tabli
         w=10
         h=10
         offset=30
@@ -60,7 +74,10 @@ class ViewWindow (QWidget):
                         qp.setBrush(emptybrush)
                 elif(Kind(Matrix[i][j])==Kind.IndestructibleWall):
                     qp.setBrush(wallbrush)
-                    #print("Aa")
+                elif(Kind(Matrix[i][j])==Kind.Wall):
+                    qp.setBrush(wallbrush2)
+                elif(Kind(Matrix[i][j])==Kind.Bomb):
+                    qp.setBrush(bombBrush)
                 qp.drawRect(w, h, 30, 30)
                 w = w + offset
             w = 10
