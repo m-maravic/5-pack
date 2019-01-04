@@ -15,7 +15,7 @@ class ViewWindow ():
     world = pygame.display.set_mode([worldx, worldy])
     backdrop = pygame.image.load(os.path.join('Slike','pozadina.jpg')).convert()
     backdropbox = world.get_rect()
-    player = Player()   # spawn player
+    player = Player('playerup.png')   # spawn player
     player.rect.x = 0
     player.rect.y = 0
     player_list = pygame.sprite.Group()
@@ -36,23 +36,23 @@ class ViewWindow ():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    player.control(-steps,0)
+                    player.control(-steps,0,"l")
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    player.control(steps,0)
+                    player.control(steps,0,"r")
                 if event.key == pygame.K_UP or event.key == ord('w'):
-                    player.control(0, -steps)
+                    player.control(0, -steps,"up")
                 if event.key == pygame.K_DOWN or event.key == ord('x'):
-                    player.control(0, steps)
+                    player.control(0, steps, "down")
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    player.control(steps,0)
+                    player.control(steps,0, "l")
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    player.control(-steps,0)
+                    player.control(-steps,0, "r")
                 if event.key == pygame.K_UP or event.key == ord('w'):
-                    player.control(0, steps)
+                    player.control(0, steps, "up")
                 if event.key == pygame.K_DOWN or event.key == ord('x'):
-                    player.control(0, -steps)
+                    player.control(0, -steps, "down")
                 if event.key == ord('q'):
                     pygame.quit()
                     sys.exit()
