@@ -1,10 +1,11 @@
 import sys
 from player import *
-
+from Enemy import *
+import random
 
 class ViewWindow ():
-    worldx = 960
-    worldy = 720
+    worldx = 720
+    worldy = 500
 
     fps = 40        # frame rate
     clock = pygame.time.Clock()
@@ -20,6 +21,12 @@ class ViewWindow ():
     player_list = pygame.sprite.Group()
     player_list.add(player)
     steps = 10      # how fast to move
+
+    enemy1 = Enemy(random.randint(0,720), random.randint(0,500), 'enemy1.png')  # spawn enemy
+    enemy2 = Enemy(random.randint(0,720), random.randint(0,500), 'enemy2.png')  # spawn enemy
+    enemy_list = pygame.sprite.Group()  # create enemy group
+    enemy_list.add(enemy1)  # add enemy to group
+    enemy_list.add(enemy2)  # add enemy to group
 
     while ok:
         for event in pygame.event.get():
@@ -53,8 +60,13 @@ class ViewWindow ():
 
     #    world.fill(BLACK)
         world.blit(backdrop, backdropbox)
-        player.update()
+        player.update(enemy_list)
         player_list.draw(world) #refresh player position
+
+        enemy_list.draw(world)  # refresh enemies
+        for e in enemy_list:
+            e.move()
+
         pygame.display.flip()
         clock.tick(fps)
 

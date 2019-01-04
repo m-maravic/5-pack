@@ -15,6 +15,11 @@ class Player(pygame.sprite.Sprite):
         self.movey = 0
         self.frame = 0
         self.images = []
+
+        # dodato
+        self.frame = 0
+        self.health = 10
+
         for i in range(1,5):
             img = pygame.image.load(os.path.join('Slike','avatarright.png')).convert()
             # img.convert_alpha()
@@ -30,13 +35,19 @@ class Player(pygame.sprite.Sprite):
         self.movex += x
         self.movey += y
 
-    def update(self):
+    def update(self, enemy_list):
         '''
         Update sprite position
         '''
 
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
+
+        # ako se sudari sa neprijateljem
+        hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
+        for enemy in hit_list:
+            self.health -= 1
+            print(self.health)
 
         # #moving left
         # if self.movex < 0:
