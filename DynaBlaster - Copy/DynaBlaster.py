@@ -2,7 +2,9 @@ import sys
 from player import *
 from Enemy import *
 import random
-
+from StaticWall import *
+from DestroyableWall import *
+import array
 
 class ViewWindow():
     worldx = 720
@@ -15,7 +17,7 @@ class ViewWindow():
 
     ok = True;
     world = pygame.display.set_mode([worldx, worldy])
-    backdrop = pygame.image.load(os.path.join('Slike', 'pozadina.jpg')).convert()
+    backdrop = pygame.image.load(os.path.join('Slike', 'background.jpg')).convert()
     backdropbox = world.get_rect()
 
     player = Player('playerup.png')  # spawn player
@@ -32,6 +34,31 @@ class ViewWindow():
     enemy_list = pygame.sprite.Group()  # create enemy group
     enemy_list.add(enemy1)  # add enemy to group
     enemy_list.add(enemy2)  # add enemy to group
+
+    stWalls_list = pygame.sprite.Group()  # create static walls group
+    deWalls_list = pygame.sprite.Group()  # create destroyableWalls group
+
+    # iscrtavanje okolnih zidova kroz naredne 2 for petlje
+    for x in range(0, worldx, 40):
+        stWall1 = StaticWall(x, 0)
+        stWall2 = StaticWall(x, worldy - 40)
+        stWalls_list.add(stWall1)
+        stWalls_list.add(stWall2)
+    for y in range(40, worldy, 40):
+        stWall3 = StaticWall(0, y)
+        stWall4 = StaticWall(worldx - 40, y)
+        stWalls_list.add(stWall3)
+        stWalls_list.add(stWall4)
+
+    # iscrtavanje unutrasnjih zidova
+    for x in range(80, worldx - 80, 80):
+        for y in range(80, worldy - 80, 80):
+            stWall = StaticWall(x, y)
+            stWalls_list.add(stWall)
+
+    for r in range((round(133 / 1.3))):
+        deWalls = DestroyableWall(random.randint(50, 680), random.randint(50, 680))
+        deWalls_list.add(deWalls)
 
     while ok:
         for event in pygame.event.get():
@@ -66,6 +93,10 @@ class ViewWindow():
 
         #    world.fill(BLACK)
         world.blit(backdrop, backdropbox)
+
+        stWalls_list.draw(world)
+        deWalls_list.draw(world)
+
         player.update(enemy_list, world)
         player_list.draw(world)  # refresh player position
 
