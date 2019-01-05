@@ -3,27 +3,32 @@ from player import *
 from Enemy import *
 import random
 
-class ViewWindow ():
+
+class ViewWindow():
     worldx = 720
     worldy = 500
 
-    fps = 40        # frame rate
+    fps = 40  # frame rate
     clock = pygame.time.Clock()
     pygame.init()
+    pygame.display.set_caption('Dyna Blaster')
 
     ok = True;
     world = pygame.display.set_mode([worldx, worldy])
-    backdrop = pygame.image.load(os.path.join('Slike','pozadina.jpg')).convert()
+    backdrop = pygame.image.load(os.path.join('Slike', 'pozadina.jpg')).convert()
     backdropbox = world.get_rect()
-    player = Player('playerup.png')   # spawn player
-    player.rect.x = 0
-    player.rect.y = 0
+
+    player = Player('playerup.png')  # spawn player
+    # prepravila sam da se plejer pojavi na (50,50) da se ne bi preklapao sa ispisom za Score
+    player.rect.x = 50
+    player.rect.y = 50
     player_list = pygame.sprite.Group()
     player_list.add(player)
-    steps = 10      # how fast to move
+    steps = 10  # how fast to move
 
-    enemy1 = Enemy(random.randint(0,720), random.randint(0,500), 'enemy1.png')  # spawn enemy
-    enemy2 = Enemy(random.randint(0,720), random.randint(0,500), 'enemy2.png')  # spawn enemy
+    # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
+    enemy1 = Enemy(random.randint(50, 720), random.randint(50, 500), 'enemy1.png')  # spawn enemy
+    enemy2 = Enemy(random.randint(50, 720), random.randint(50, 500), 'enemy2.png')  # spawn enemy
     enemy_list = pygame.sprite.Group()  # create enemy group
     enemy_list.add(enemy1)  # add enemy to group
     enemy_list.add(enemy2)  # add enemy to group
@@ -31,24 +36,25 @@ class ViewWindow ():
     while ok:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit(); sys.exit()
+                pygame.quit();
+                sys.exit()
                 ok = False
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    player.control(-steps,0,"l")
+                    player.control(-steps, 0, "l")
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    player.control(steps,0,"r")
+                    player.control(steps, 0, "r")
                 if event.key == pygame.K_UP or event.key == ord('w'):
-                    player.control(0, -steps,"up")
+                    player.control(0, -steps, "up")
                 if event.key == pygame.K_DOWN or event.key == ord('x'):
                     player.control(0, steps, "down")
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    player.control(steps,0, "l")
+                    player.control(steps, 0, "l")
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    player.control(-steps,0, "r")
+                    player.control(-steps, 0, "r")
                 if event.key == pygame.K_UP or event.key == ord('w'):
                     player.control(0, steps, "up")
                 if event.key == pygame.K_DOWN or event.key == ord('x'):
@@ -58,10 +64,13 @@ class ViewWindow ():
                     sys.exit()
                     ok = False
 
-    #    world.fill(BLACK)
+        #    world.fill(BLACK)
         world.blit(backdrop, backdropbox)
-        player.update(enemy_list)
-        player_list.draw(world) #refresh player position
+        player.update(enemy_list, world)
+        player_list.draw(world)  # refresh player position
+
+        player.show_score(world)
+        player.show_lives(world)
 
         enemy_list.draw(world)  # refresh enemies
         for e in enemy_list:
