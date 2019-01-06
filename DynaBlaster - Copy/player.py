@@ -42,7 +42,6 @@ class Player(pygame.sprite.Sprite):
     # smanjenje zivota
     def lives_down(self, world):
         self.total_lives -= 1
-        print(self.health)
         if self.total_lives == 0:
             pygame.quit()
 

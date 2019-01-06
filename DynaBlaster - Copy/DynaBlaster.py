@@ -7,9 +7,9 @@ from DestroyableWall import *
 import array
 
 class ViewWindow():
-    worldx = 720
-    worldy = 500
-
+    worldx = 760
+    worldy = 520
+    iconSize = 40
     fps = 40  # frame rate
     clock = pygame.time.Clock()
     pygame.init()
@@ -22,15 +22,15 @@ class ViewWindow():
 
     player = Player('playerup.png')  # spawn player
     # prepravila sam da se plejer pojavi na (50,50) da se ne bi preklapao sa ispisom za Score
-    player.rect.x = 50
-    player.rect.y = 50
+    player.rect.x = iconSize
+    player.rect.y = iconSize
     player_list = pygame.sprite.Group()
     player_list.add(player)
     steps = 10  # how fast to move
 
     # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
-    enemy1 = Enemy(random.randint(50, 720), random.randint(50, 500), 'enemy1.png')  # spawn enemy
-    enemy2 = Enemy(random.randint(50, 720), random.randint(50, 500), 'enemy2.png')  # spawn enemy
+    enemy1 = Enemy(680, random.randint(iconSize, worldy-2*iconSize), 'enemy1.png')  # spawn enemy
+    enemy2 = Enemy(random.randint(iconSize, worldx-iconSize*2), random.randint(iconSize, worldy-2*iconSize), 'enemy2.png')  # spawn enemy
     enemy_list = pygame.sprite.Group()  # create enemy group
     enemy_list.add(enemy1)  # add enemy to group
     enemy_list.add(enemy2)  # add enemy to group
@@ -39,25 +39,25 @@ class ViewWindow():
     deWalls_list = pygame.sprite.Group()  # create destroyableWalls group
 
     # iscrtavanje okolnih zidova kroz naredne 2 for petlje
-    for x in range(0, worldx, 40):
+    for x in range(0, worldx, iconSize):
         stWall1 = StaticWall(x, 0)
-        stWall2 = StaticWall(x, worldy - 40)
+        stWall2 = StaticWall(x, worldy - iconSize)
         stWalls_list.add(stWall1)
         stWalls_list.add(stWall2)
-    for y in range(40, worldy, 40):
+    for y in range(iconSize, worldy, iconSize):
         stWall3 = StaticWall(0, y)
-        stWall4 = StaticWall(worldx - 40, y)
+        stWall4 = StaticWall(worldx - iconSize, y)
         stWalls_list.add(stWall3)
         stWalls_list.add(stWall4)
 
     # iscrtavanje unutrasnjih zidova
-    for x in range(80, worldx - 80, 80):
-        for y in range(80, worldy - 80, 80):
+    for x in range(iconSize*2, worldx - iconSize*2, iconSize*2):
+        for y in range(iconSize*2, worldy - iconSize*2, iconSize*2):
             stWall = StaticWall(x, y)
             stWalls_list.add(stWall)
 
     for r in range((round(133 / 1.3))):
-        deWalls = DestroyableWall(random.randint(50, 680), random.randint(50, 680))
+        deWalls = DestroyableWall(random.randint(iconSize, worldx-iconSize*2), random.randint(iconSize, worldy-iconSize*2))
         deWalls_list.add(deWalls)
 
     while ok:

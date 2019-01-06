@@ -1,11 +1,14 @@
-import pygame
 import os
-import math
+import pygame
 
 BLUE  = (25,25,200)
 BLACK = (23,23,23 )
 WHITE = (254,254,254)
 ALPHA = (0,255,0)
+
+worldx = 760
+worldy = 520
+iconSize = 40
 
 class Enemy(pygame.sprite.Sprite):
     '''
@@ -27,12 +30,19 @@ class Enemy(pygame.sprite.Sprite):
         distance = 80
         speed = 1
 
-        if self.counter >= 0 and self.counter <= distance:
+        if self.rect.x < iconSize:
             self.rect.x += speed
-        elif self.counter >= distance and self.counter <= distance * 2:
+            self.counter = 80
+        elif self.rect.x > worldx-iconSize*2:
             self.rect.x -= speed
+            self.counter = 80
         else:
-            self.counter = 0
+            if self.counter >= 0 and self.counter <= distance:
+                self.rect.x += speed
+            elif self.counter >= distance and self.counter <= distance * 2:
+                self.rect.x -= speed
+            else:
+                self.counter = 0
 
         self.counter += 1
 
