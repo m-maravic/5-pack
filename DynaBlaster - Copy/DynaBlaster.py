@@ -5,6 +5,8 @@ import random
 from StaticWall import *
 from DestroyableWall import *
 import array
+from definitions import *
+import random
 
 class ViewWindow():
     worldx = 760
@@ -38,27 +40,42 @@ class ViewWindow():
     stWalls_list = pygame.sprite.Group()  # create static walls group
     deWalls_list = pygame.sprite.Group()  # create destroyableWalls group
 
+    wallsPositions= make_matrix()
+
     # iscrtavanje okolnih zidova kroz naredne 2 for petlje
     for x in range(0, worldx, iconSize):
         stWall1 = StaticWall(x, 0)
         stWall2 = StaticWall(x, worldy - iconSize)
         stWalls_list.add(stWall1)
         stWalls_list.add(stWall2)
+        wallsPositions[stWall1.rect.x][0] = 1
+        wallsPositions[stWall2.rect.x][0] = 1
     for y in range(iconSize, worldy, iconSize):
         stWall3 = StaticWall(0, y)
         stWall4 = StaticWall(worldx - iconSize, y)
         stWalls_list.add(stWall3)
         stWalls_list.add(stWall4)
+        wallsPositions[0][stWall3.rect.y] = 1
+        wallsPositions[0][stWall4.rect.y] = 1
 
     # iscrtavanje unutrasnjih zidova
     for x in range(iconSize*2, worldx - iconSize*2, iconSize*2):
         for y in range(iconSize*2, worldy - iconSize*2, iconSize*2):
             stWall = StaticWall(x, y)
+            wallsPositions[stWall.rect.x][stWall.rect.y] = 1
             stWalls_list.add(stWall)
 
-    for r in range((round(133 / 1.3))):
-        deWalls = DestroyableWall(random.randint(iconSize, worldx-iconSize*2), random.randint(iconSize, worldy-iconSize*2))
-        deWalls_list.add(deWalls)
+    #unistivi zidovi
+    for x in range(iconSize, worldx - iconSize, iconSize):
+        for y in range(iconSize, worldy - iconSize, iconSize):
+            if (bool(random.getrandbits(1))):
+                if (wallsPositions[x][y] != 1):
+                    deWall = DestroyableWall(x, y)
+                    wallsPositions[x][y] = 1
+                    deWalls_list.add(deWall)
+
+
+    print(wallsPositions)
 
     while ok:
         for event in pygame.event.get():
