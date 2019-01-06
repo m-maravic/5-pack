@@ -96,6 +96,9 @@ class ViewWindow():
                     player.control(0, -steps, "up")
                 if event.key == pygame.K_DOWN or event.key == ord('x'):
                     player.control(0, steps, "down")
+                if event.key == pygame.K_KP_ENTER or event.key == ord('g'):
+                    player.control(0, steps, "e")
+
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -106,6 +109,9 @@ class ViewWindow():
                     player.control(0, steps, "up")
                 if event.key == pygame.K_DOWN or event.key == ord('x'):
                     player.control(0, -steps, "down")
+                if event.key == pygame.K_KP_ENTER or event.key == ord('g'):
+                    player.control(player.rect.x,player.rect.y, "e")
+
                 if event.key == ord('q'):
                     pygame.quit()
                     sys.exit()
