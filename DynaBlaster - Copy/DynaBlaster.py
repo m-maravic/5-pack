@@ -69,13 +69,16 @@ class ViewWindow():
     for x in range(iconSize, worldx - iconSize, iconSize):
         for y in range(iconSize, worldy - iconSize, iconSize):
             if (bool(random.getrandbits(1))):
-                if (wallsPositions[x][y] != 1):
+                if (wallsPositions[x][y] == 0):#ako je prazno polje
                     deWall = DestroyableWall(x, y)
-                    wallsPositions[x][y] = 1
+                    wallsPositions[x][y] = 2#za unistive zidove
                     deWalls_list.add(deWall)
 
 
     print(wallsPositions)
+
+    bomb_list=pygame.sprite.Group()
+
 
     while ok:
         for event in pygame.event.get():
