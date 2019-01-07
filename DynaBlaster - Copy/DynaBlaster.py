@@ -7,6 +7,7 @@ from DestroyableWall import *
 import array
 from definitions import *
 import random
+from Bomb import *
 
 class ViewWindow():
     worldx = 760
@@ -29,6 +30,7 @@ class ViewWindow():
     player_list = pygame.sprite.Group()
     player_list.add(player)
     steps = 10  # how fast to move
+
 
     # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
     enemy1 = Enemy(680, random.randint(iconSize, worldy-2*iconSize), 'enemy1.png')  # spawn enemy
@@ -77,8 +79,7 @@ class ViewWindow():
 
     print(wallsPositions)
 
-    bomb_list=pygame.sprite.Group()
-
+    bomb_list = pygame.sprite.Group()  # create bomb list
 
     while ok:
         for event in pygame.event.get():
@@ -96,9 +97,11 @@ class ViewWindow():
                     player.control(0, -steps, "up")
                 if event.key == pygame.K_DOWN or event.key == ord('x'):
                     player.control(0, steps, "down")
-                if event.key == pygame.K_KP_ENTER or event.key == ord('g'):
-                    player.control(0, steps, "e")
-
+                if event.key == pygame.K_SPACE:
+                    bomb = Bomb('bonb.png')
+                    bomb.rect.x = player.rect.x
+                    bomb.rect.y = player.rect.y
+                    bomb_list.add(bomb)  # add bomb to group
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -125,6 +128,8 @@ class ViewWindow():
 
         player.update(enemy_list, world)
         player_list.draw(world)  # refresh player position
+
+        bomb_list.draw(world)
 
         player.show_score(world)
         player.show_lives(world)

@@ -23,8 +23,6 @@ class Player(pygame.sprite.Sprite):
         self.imgRight.set_colorkey((255, 255, 255))
         self.imgLeft = pygame.image.load(os.path.join('Slike', 'playerleft.png')).convert()
         self.imgLeft.set_colorkey((255, 255, 255))
-        self.imgBomb = pygame.image.load(os.path.join('Slike','exploadstart.png')).convert()
-        self.imgBomb.set_colorkey((255, 255, 255))
 
         self.direction = self.imgRight
         self.img = self.imgRight
@@ -61,12 +59,6 @@ class Player(pygame.sprite.Sprite):
             self.movex += x
             self.movey += y
             self.direction = self.imgRight
-
-        elif(dir == "e"):
-            self.movex = self.movex
-            self.movey = self.movey
-            self.direction = self.imgBomb
-
         else:
             self.movex += x
             self.movey += y
