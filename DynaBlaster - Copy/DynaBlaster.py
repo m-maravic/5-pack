@@ -13,7 +13,7 @@ from Bomb import *
 from Bomberman import *
 from GreenSurface import *
 
-class ViewWindow():
+def game_loop():
     fps = 40  # frame rate
     clock = pygame.time.Clock()
     pygame.init()
@@ -170,7 +170,7 @@ class ViewWindow():
         clock.tick(fps)
 
 
-    if __name__ == '__main__':
-        app = QApplication(sys.argv)
-        ex = ViewWindow()
-        sys.exit(app.exec_())
+    # if __name__ == '__main__':
+    #     app = QApplication(sys.argv)
+    #     ex = ViewWindow()
+    #     sys.exit(app.exec_())
