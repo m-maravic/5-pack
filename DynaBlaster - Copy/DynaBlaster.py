@@ -1,4 +1,5 @@
 import sys
+import pygame
 from player import *
 from Enemy import *
 import random
