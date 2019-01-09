@@ -3,4 +3,7 @@ DynaBlaster - Copy/__pycache__/*
 DynaBlaster - Copy/venv/*
 .idea/*
 */__pycache__/*
-DynaBlaster - Copy/virt/*	
+DynaBlaster - Copy/virt/*
+.idea/workspace.xml
+
+

@@ -1,5 +1,10 @@
 import pygame
 import os
+from definitions import *
+
+iconSize =40
+sirina = 19
+visina = 13
 
 class Player(pygame.sprite.Sprite):
 
@@ -11,13 +16,10 @@ class Player(pygame.sprite.Sprite):
         self.images = []
         self.total_score = 0
         self.kill_points = 10
-        self.frame = 0
         self.total_lives = 10
         # score
         self.score_cfg = pygame.font.SysFont('Helvetica', 20, True)
         self.health_cfg = pygame.font.SysFont('Helvetica', 20, True)
-
-        #########
 
         self.imgRight = pygame.image.load(os.path.join('Slike', img)).convert()
         self.imgRight.set_colorkey((255, 255, 255))
@@ -29,6 +31,12 @@ class Player(pygame.sprite.Sprite):
         self.images.append(self.img)
         self.image = self.images[0]
         self.rect = self.direction.get_rect()
+
+        #proba za kretanje
+        self.case_x = 1
+        self.case_y = 1
+        self.x = iconSize * self.case_x  # taille_sprite = 40
+        self.y = iconSize * self.case_y
 
     # score se uvecava kad ubije nekog
     def score_up(self):

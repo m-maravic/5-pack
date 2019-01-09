@@ -1,9 +1,9 @@
 from enum import Enum
 import  random
 #vec ima dve klase moze samo jos jedna pazite sta stavljete
-width=760
-height=520
-
+worldx = 760
+worldy = 520
+iconSize = 40
 """monsterlx=random.randint(0,3)
 monsterly=random.randint(9,12)
 
@@ -14,8 +14,8 @@ monsterl3x=random.randint(7,10)
 monsterl3y=random.randint(0,3)"""
 
 
-def make_matrix():  # player3Lives,player4Lives,player5Lives
-    Matrix = [[0 for x in range(13)] for y in range(19)]
+def make_matrix():
+    Matrix = [[0 for x in range(20)] for y in range(20)]
     return  Matrix
 
 
