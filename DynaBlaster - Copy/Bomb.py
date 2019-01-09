@@ -2,65 +2,43 @@ import pygame
 import os
 import time
 
-imgSize = 40
+iconSize = 40
 
 class Bomb(pygame.sprite.Sprite):
 
-    def __init__(self, img):
+    def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.movex = 0
-        self.movey = 0
-        self.images = []
+        self.image = pygame.image.load(os.path.join('Slike', 'bonb.png')).convert()
+        self.image.set_colorkey((255, 255, 255))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
-        self.bombImage = pygame.image.load(os.path.join('Slike', img)).convert()
-        self.bombImage.set_colorkey((255, 255, 255))
+        # vezano za eksploziju
+        self.timeToExplode = 3000
+        self.bombRange = 5
 
-        self.images.append(self.bombImage)
-        self.image = self.images[0]
-        self.rect = self.bombImage.get_rect()
+    def update(self, dt):
+        # Subtract the passed time `dt` from the timer each frame.
+        self.timeToExplode -= dt
 
-    #self.timeToExplode=3000
+    def explode(self, screen):
+        self.image = pygame.image.load(os.path.join('Slike', 'explodeStart.png')).convert()
+        self.image.set_colorkey((255, 255, 255))
+        self.imageLeft = pygame.image.load(os.path.join('Slike', 'explodeLeft.png')).convert()
+        self.imageLeft.set_colorkey((255, 255, 255))
+        self.imageRight = pygame.image.load(os.path.join('Slike', 'explodeRight.png')).convert()
+        self.imageRight.set_colorkey((255, 255, 255))
+        self.imageUp = pygame.image.load(os.path.join('Slike', 'explodeUp.png')).convert()
+        self.imageUp.set_colorkey((255, 255, 255))
+        self.imageDown = pygame.image.load(os.path.join('Slike', 'explodeDown.png')).convert()
+        self.imageDown.set_colorkey((255, 255, 255))
 
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        screen.blit(self.imageLeft, (self.rect.x - iconSize, self.rect.y))
+        screen.blit(self.imageRight, (self.rect.x + iconSize, self.rect.y))
+        screen.blit(self.imageUp, (self.rect.x , self.rect.y - iconSize))
+        screen.blit(self.imageDown, (self.rect.x , self.rect.y + iconSize))
 
-    #self.image=pygame.image.load(os.path.join('Slike','bonb.png')).convert()
-
-    #explosion
-        # time.sleep(3)
-        #
-        # self.image=pygame.image.load(os.path.join('Slike','explodstart.png')).convert()
-        # self.rect=self.image.get_rect()
-        #
-        # self.x=x
-        # self.y=y-imgSize
-        #
-        # self.imageUp=pygame.imageUp.load(os.path.join('Slike','exploh.png'))
-        # self.rect=self.imageUp.get_rect()
-        #
-        # self.x = x
-        # self.y = y + imgSize
-        # self.imageDown=pygame.imageDown.load(os.path.join('Slike','explob.png'))
-        # self.rect = self.imageDown.get_rect()
-        # self.x = x-imgSize
-        # self.y = y
-        # self.imageLeft=pygame.imageLeft.load(os.path.join('Slike','explog.png'))
-        # self.rect = self.imageLeft.get_rect()
-        # self.x = x + imgSize
-        # self.y = y
-        #
-        # self.imageRight=pygame.imageRight.load(os.path.join('Slike','explod.png'))
-        # self.rect = self.imageRight.get_rect()
-
-#after explosion, destruction of walls
-    def explosion(self,matrix,x,y,imgSize,world):
-        if(matrix[x][y-imgSize]==0|matrix[x][y-imgSize]==2):
-           world.blit(x,y-imgSize)#nisam siguran da li moze ovo ovako da se izcrta
-        if(matrix[x][y+imgSize]==0|matrix[x][y-imgSize]==2):
-            world.blit(x,y+imgSize)
-        if (matrix[x-imgSize][y] == 0|matrix[x][y-imgSize]==2):
-            world.blit(x-imgSize, y)
-        if (matrix[x+imgSize][y] == 0|matrix[x][y-imgSize]==2):
-            world.blit(x+imgSize, y )
-        if (matrix[x][y] == 0):
-            world.blit(x, y)
-
-
+    def draw(self, screen):
+        screen.blit(self.image, (self.rect.x, self.rect.y))

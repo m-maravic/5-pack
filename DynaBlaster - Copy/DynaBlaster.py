@@ -1,5 +1,6 @@
 import sys
 import pygame
+import time
 from player import *
 from Enemy import *
 import random
@@ -103,22 +104,15 @@ class ViewWindow():
                 pygame.quit();
                 sys.exit()
                 ok = False
+            # Get the passed time since last clock.tick call.
+            dt = clock.tick(30)
 
             if event.type == pygame.KEYDOWN:
-                # if event.key == pygame.K_LEFT:
-                #     player.control(-steps, 0, "l")
-                # if event.key == pygame.K_RIGHT:
-                #     player.control(steps, 0, "r")
-                # if event.key == pygame.K_UP:
-                #     player.control(0, -steps, "up")
-                # if event.key == pygame.K_DOWN:
-                #     player.control(0, steps, "down")
-                # if event.key == pygame.K_SPACE:
-                #     bomb = Bomb('bonb.png')
-                #     bomb.rect.x = player.rect.x
-                #     bomb.rect.y = player.rect.y
-                #     bomb_list.add(bomb)  # add bomb to group
-
+                if event.key == pygame.K_SPACE:
+                    bomb = Bomb('bonb.png')
+                    bomb.rect.x = player.rect.x
+                    bomb.rect.y = player.rect.y
+                    bomb_list.add(bomb)  # add bomb to group
                 if event.key == ord('a'):
                     bomberman.move('r', enemy_list, world)
                 elif event.key == ord('d'):
@@ -128,18 +122,6 @@ class ViewWindow():
                 elif event.key == ord('s'):
                     bomberman.move('u', enemy_list, world)
 
-            # if event.type == pygame.KEYUP:
-            #     if event.key == pygame.K_LEFT or event.key == ord('a'):
-            #         player.control(steps, 0, "l")
-            #     if event.key == pygame.K_RIGHT or event.key == ord('d'):
-            #         player.control(-steps, 0, "r")
-            #     if event.key == pygame.K_UP or event.key == ord('w'):
-            #         player.control(0, steps, "up")
-            #     if event.key == pygame.K_DOWN or event.key == ord('x'):
-            #         player.control(0, -steps, "down")
-            #     if event.key == pygame.K_KP_ENTER or event.key == ord('g'):
-            #         player.control(player.rect.x,player.rect.y, "e")
-
                 if event.key == ord('q'):
                     pygame.quit()
                     sys.exit()
@@ -147,18 +129,38 @@ class ViewWindow():
 
         #    world.fill(BLACK)
         world.blit(backdrop, backdropbox)
-        grass_list.draw(world)
+        # grass_list.draw(world)
         stWalls_list.draw(world)
         deWalls_list.draw(world)
+
         world.blit(bomberman.image, (bomberman.x, bomberman.y))
+
+        # Game logic.
+        to_remove = pygame.sprite.Group()
+
+        # Update bombs. Pass the `dt` to the bomb instances.
+        for bomb in bomb_list:
+            bomb.update(dt)
+            # Add old bombs to the to_remove set.
+            if bomb.timeToExplode <= -3000:
+                bomb_list.remove(bomb)
+
+        for bomb in bomb_list:
+            bomb.draw(world)
+            # I'm just drawing the explosion lines each
+            # frame when the time is below 0.
+            if bomb.timeToExplode <= 0:
+                bomb.explode(world)
+
 
         # player.update(enemy_list, world)
         # player_list.draw(world)  # refresh player position
 
         bomb_list.draw(world)
-
         bomberman.show_score(world)
         bomberman.show_lives(world)
+        # player.show_score(world)
+        # player.show_lives(world)
 
         enemy_list.draw(world)  # refresh enemies
         for e in enemy_list:
@@ -166,7 +168,6 @@ class ViewWindow():
 
         pygame.display.flip()
         clock.tick(fps)
-
 
 
     if __name__ == '__main__':
