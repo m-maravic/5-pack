@@ -42,41 +42,50 @@ class ViewWindow():
     stWalls_list = pygame.sprite.Group()  # create static walls group
     deWalls_list = pygame.sprite.Group()  # create destroyableWalls group
 
-    wallsPositions= make_matrix()
-
     # iscrtavanje okolnih zidova kroz naredne 2 for petlje
     for x in range(0, worldx, iconSize):
         stWall1 = StaticWall(x, 0)
         stWall2 = StaticWall(x, worldy - iconSize)
         stWalls_list.add(stWall1)
         stWalls_list.add(stWall2)
-        wallsPositions[stWall1.rect.x][0] = 1
-        wallsPositions[stWall2.rect.x][0] = 1
+        wallsPositions[round(stWall1.rect.x / iconSize)][0] = 1
+        wallsPositions[round(stWall2.rect.x / iconSize)][0] = 1
     for y in range(iconSize, worldy, iconSize):
         stWall3 = StaticWall(0, y)
         stWall4 = StaticWall(worldx - iconSize, y)
         stWalls_list.add(stWall3)
         stWalls_list.add(stWall4)
-        wallsPositions[0][stWall3.rect.y] = 1
-        wallsPositions[0][stWall4.rect.y] = 1
+        wallsPositions[0][round(stWall3.rect.y / iconSize)] = 1
+        wallsPositions[0][round(stWall4.rect.y / iconSize)] = 1
 
     # iscrtavanje unutrasnjih zidova
-    for x in range(iconSize*2, worldx - iconSize*2, iconSize*2):
-        for y in range(iconSize*2, worldy - iconSize*2, iconSize*2):
+    for x in range(iconSize * 2, worldx - iconSize * 2, iconSize * 2):
+        for y in range(iconSize * 2, worldy - iconSize * 2, iconSize * 2):
             stWall = StaticWall(x, y)
-            wallsPositions[stWall.rect.x][stWall.rect.y] = 1
+            wallsPositions[round(stWall.rect.x / iconSize)][round(stWall.rect.y / iconSize)] = 1
             stWalls_list.add(stWall)
 
-    #unistivi zidovi
+    # unistivi zidovi
+    # for x in range(0,20):
+    #     a = random.randint(1,18)
+    #     b = random.randint(1,12)
+    #     if (wallsPositions[a][b] == 0):
+    #         deWall = DestroyableWall(a*iconSize, b*iconSize)
+    #         deWalls_list.add(deWall)
+    #         wallsPositions[a][b] = 2
+
+    #
     for x in range(iconSize, worldx - iconSize, iconSize):
         for y in range(iconSize, worldy - iconSize, iconSize):
             if (bool(random.getrandbits(1))):
-                if (wallsPositions[x][y] == 0):#ako je prazno polje
-                    deWall = DestroyableWall(x, y)
-                    wallsPositions[x][y] = 2#za unistive zidove
-                    deWalls_list.add(deWall)
+                if (wallsPositions[round(x / iconSize)][round(y / iconSize)] == 0):  # ako je prazno polje
+                    if ((x != 40 and x != 80) and (y != 40 and y != 80)):  # samo radi testiranja posle cemo izmeniti
+                        deWall = DestroyableWall(x, y)
+                        deWalls_list.add(deWall)
+                        wallsPositions[round(deWall.rect.x / iconSize)][
+                            round(deWall.rect.y / iconSize)] = 2  # za unistive zidove
 
-
+    # test
     print(wallsPositions)
 
     bomb_list = pygame.sprite.Group()  # create bomb list
