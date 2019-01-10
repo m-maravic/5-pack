@@ -23,12 +23,6 @@ def game_loop():
     backdrop = pygame.image.load(os.path.join('Slike', 'background.jpg')).convert()
     backdropbox = world.get_rect()
 
-    # player = Player('playerup.png')  # spawn player
-    # player.rect.x = iconSize
-    # player.rect.y = iconSize
-    # player_list = pygame.sprite.Group()
-    # player_list.add(player)
-    # steps = 10 # how fast to move
 
     bomberman = Bomberman(img,1,1)
     bomberman2 = Bomberman(img2,17,11)
