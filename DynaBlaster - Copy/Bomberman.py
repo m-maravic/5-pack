@@ -1,14 +1,15 @@
 import pygame
 import os
 from definitions import *
+import time
 
 iconSize =40
 sirina = 19
 visina = 13
 
 class Bomberman(pygame.sprite.Sprite):
-    def __init__(self, img):
-        self.image = pygame.image.load(os.path.join('Slike',img )).convert()
+    def __init__(self, img, case1, case2):
+        self.image = pygame.image.load(os.path.join('Slike',img)).convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
 
@@ -19,8 +20,8 @@ class Bomberman(pygame.sprite.Sprite):
         self.score_cfg = pygame.font.SysFont('Helvetica', 20, True)
         self.health_cfg = pygame.font.SysFont('Helvetica', 20, True)
 
-        self.case_x = 1
-        self.case_y = 1
+        self.case_x = case1
+        self.case_y = case2
         self.x = iconSize * self.case_x
         self.y = iconSize * self.case_y
 
@@ -39,15 +40,15 @@ class Bomberman(pygame.sprite.Sprite):
                     self.x = self.case_x * iconSize
 
         if direction == "d":
-            if self.case_y > 0:
-                if wallsPositions[self.case_x][self.case_y-1] == 0:
-                    self.case_y -= 1
+            #if self.case_y > 0:
+                if wallsPositions[self.case_x][self.case_y+1] == 0:
+                    self.case_y += 1
                     self.y = self.case_y * iconSize
 
         if direction == "u":
-            if self.case_y < (visina - 1):
-                if wallsPositions[self.case_x][self.case_y+1] == 0:
-                    self.case_y += 1
+            #if self.case_y < (visina - 1):
+                if wallsPositions[self.case_x][self.case_y-1] == 0:
+                    self.case_y -= 1
                     self.y = self.case_y * iconSize
 
 
@@ -69,14 +70,18 @@ class Bomberman(pygame.sprite.Sprite):
         world.blit(self.score, (10, 10))
 
     # smanjenje zivota
-    def lives_down(self, world):
+    def lives_down(self, world, no):
         self.total_lives -= 1
         if self.total_lives == 0:
             pygame.quit()
 
-        #vrati ga na pocetak
-        self.x = iconSize
-        self.y = iconSize
+        if no == 1:
+            #vrati ga na pocetak
+            self.x = iconSize
+            self.y = iconSize
+        else:
+            self.x = 17*iconSize
+            self.y = 11*iconSize
 
 
     # prikaz zivota

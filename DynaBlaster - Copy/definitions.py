@@ -5,6 +5,7 @@ worldx = 760
 worldy = 520
 iconSize = 40
 img = 'playerup.png'
+img2 = 'secondplayer.png'
 
 """monsterlx=random.randint(0,3)
 monsterly=random.randint(9,12)

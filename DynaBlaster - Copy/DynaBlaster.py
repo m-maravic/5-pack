@@ -1,7 +1,6 @@
 import sys
 import pygame
 import time
-from player import *
 from Enemy import *
 import random
 from StaticWall import *
@@ -11,7 +10,7 @@ from definitions import *
 import random
 from Bomb import *
 from Bomberman import *
-from GreenSurface import *
+from Timer import *
 
 def game_loop():
     fps = 40  # frame rate
@@ -31,7 +30,8 @@ def game_loop():
     # player_list.add(player)
     # steps = 10 # how fast to move
 
-    bomberman = Bomberman(img)
+    bomberman = Bomberman(img,1,1)
+    bomberman2 = Bomberman(img2,17,11)
 
     # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
     enemy1 = Enemy(random.randint(1, 19)*iconSize, random.randint(1, 13)*iconSize, 'enemy1.png')  # spawn enemy
@@ -42,15 +42,6 @@ def game_loop():
 
     stWalls_list = pygame.sprite.Group()  # create static walls group
     deWalls_list = pygame.sprite.Group()  # create destroyableWalls group
-    grass_list = pygame.sprite.Group()
-
-    # trava
-    # for x in range(iconSize, worldx - iconSize, iconSize):
-    #     for y in range(iconSize, worldy - iconSize, iconSize):
-    #         if (wallsPositions[round(x / iconSize)][round(y / iconSize)] == 0):  # ako je prazno polje
-    #             grass = GreenSurface(x, y)
-    #             wallsPositions[round(grass.rect.x / iconSize)][round(grass.rect.y / iconSize)] = 3  # nema zida
-    #             grass_list.add(grass)
 
     # iscrtavanje okolnih zidova kroz naredne 2 for petlje
     for x in range(0, worldx, iconSize):
@@ -75,29 +66,21 @@ def game_loop():
             wallsPositions[round(stWall.rect.x / iconSize)][round(stWall.rect.y / iconSize)] = 1
             stWalls_list.add(stWall)
 
-    # unistivi zidovi
-    # for x in range(0,20):
-    #     a = random.randint(1,18)
-    #     b = random.randint(1,12)
-    #     if (wallsPositions[a][b] == 0):
-    #         deWall = DestroyableWall(a*iconSize, b*iconSize)
-    #         deWalls_list.add(deWall)
-    #         wallsPositions[a][b] = 2
-
     for x in range(iconSize, worldx - iconSize, iconSize):
         for y in range(iconSize, worldy - iconSize, iconSize):
             if (bool(random.getrandbits(1))):
                 if (wallsPositions[round(x / iconSize)][round(y / iconSize)] == 0):  # ako je prazno polje
                     if ((x != 40 and x != 80) and (y != 40 and y != 80)):  # samo radi testiranja posle cemo izmeniti
-                        deWall = DestroyableWall(x, y)
-                        deWalls_list.add(deWall)
-                        wallsPositions[round(deWall.rect.x / iconSize)][round(deWall.rect.y / iconSize)] = 2  # za unistive zidove
+                        if x!= worldx-iconSize*2 and y!= worldy-iconSize*2:
+                            deWall = DestroyableWall(x, y)
+                            deWalls_list.add(deWall)
+                            wallsPositions[round(deWall.rect.x / iconSize)][round(deWall.rect.y / iconSize)] = 2  # za unistive zidove
 
     # test
-    print(wallsPositions)
-
     bomb_list = pygame.sprite.Group()  # create bomb list
+    bomb_list2 = pygame.sprite.Group()
 
+    t=Timer()
     while ok:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -107,8 +90,9 @@ def game_loop():
             # Get the passed time since last clock.tick call.
             dt = clock.tick(30)
 
+            #prvi igrac
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == ord('f'):
                     bomb = Bomb(bomberman.x, bomberman.y)
                     bomb_list.add(bomb)  # add bomb to group
                 if event.key == ord('a'):
@@ -116,9 +100,23 @@ def game_loop():
                 elif event.key == ord('d'):
                     bomberman.move('r', enemy_list, world)
                 elif event.key == ord('w'):
-                    bomberman.move('d', enemy_list, world)
-                elif event.key == ord('s'):
                     bomberman.move('u', enemy_list, world)
+                elif event.key == ord('x'):
+                    bomberman.move('d', enemy_list, world)
+
+                #drugi igrac
+                elif event.key == pygame.K_LEFT:
+                    bomberman2.move('l', enemy_list, world)
+                elif event.key == pygame.K_RIGHT:
+                    bomberman2.move('r', enemy_list, world)
+                elif event.key == pygame.K_DOWN:
+                    bomberman2.move('d', enemy_list, world)
+                elif event.key == pygame.K_UP:
+                    bomberman2.move('u', enemy_list, world)
+                elif event.key == pygame.K_SPACE:
+                    bomb2 = Bomb(bomberman2.x, bomberman2.y)
+                    bomb_list2.add(bomb2)  # add bomb to group
+
 
                 if event.key == ord('q'):
                     pygame.quit()
@@ -131,6 +129,8 @@ def game_loop():
         stWalls_list.draw(world)
         deWalls_list.draw(world)
 
+        bomb_list.draw(world)
+        bomb_list2.draw(world)
 
         # Game logic.
         to_remove = pygame.sprite.Group()
@@ -147,7 +147,21 @@ def game_loop():
             # I'm just drawing the explosion lines each
             # frame when the time is below 0.
             if bomb.timeToExplode <= 0:
-                bomb.explode(world, deWalls_list, bomberman)
+                bomb.explode(world, deWalls_list, bomberman, 1)
+
+        #bombe drugog igraca
+        for bomb2 in bomb_list2:
+            bomb2.update(dt)
+            # Add old bombs to the to_remove set.
+            if bomb2.timeToExplode <= -3000:
+                bomb_list2.remove(bomb2)
+
+        for bomb2 in bomb_list2:
+            bomb2.draw(world)
+            # I'm just drawing the explosion lines each
+            # frame when the time is below 0.
+            if bomb2.timeToExplode <= 0:
+                bomb2.explode(world, deWalls_list, bomberman2, 2)
 
         #world.blit(bomberman.image, (bomberman.x, bomberman.y))
 
@@ -155,7 +169,7 @@ def game_loop():
         # player.update(enemy_list, world)
         # player_list.draw(world)  # refresh player position
 
-        bomb_list.draw(world)
+
         bomberman.show_score(world)
         bomberman.show_lives(world)
         # player.show_score(world)
@@ -166,6 +180,7 @@ def game_loop():
             e.move()
 
         world.blit(bomberman.image, (bomberman.x, bomberman.y))
+        world.blit(bomberman2.image, (bomberman2.x, bomberman2.y))
 
         bomberman.rect.x = bomberman.x
         bomberman.rect.y = bomberman.y
@@ -175,7 +190,7 @@ def game_loop():
         if hit_list.__len__() > 0:
             bomberman.lives_down(world)
 
-
+        t.tik_tack(world)
         pygame.display.flip()
         clock.tick(fps)
 
