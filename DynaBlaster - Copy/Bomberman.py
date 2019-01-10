@@ -7,8 +7,8 @@ sirina = 19
 visina = 13
 
 class Bomberman(pygame.sprite.Sprite):
-    def __init__(self):
-        self.image = pygame.image.load(os.path.join('Slike', 'playerup.png')).convert()
+    def __init__(self, img):
+        self.image = pygame.image.load(os.path.join('Slike',img )).convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
 
@@ -56,8 +56,6 @@ class Bomberman(pygame.sprite.Sprite):
         hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
 
         if hit_list.__len__() > 0:
-            self.rect.x = 50
-            self.rect.y = 50
             self.lives_down(world)
 
 

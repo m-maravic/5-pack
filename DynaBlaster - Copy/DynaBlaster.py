@@ -31,11 +31,11 @@ def game_loop():
     # player_list.add(player)
     # steps = 10 # how fast to move
 
-    bomberman = Bomberman()
+    bomberman = Bomberman(img)
 
     # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
-    enemy1 = Enemy(680, random.randint(iconSize, worldy-2*iconSize), 'enemy1.png')  # spawn enemy
-    enemy2 = Enemy(random.randint(iconSize, worldx-iconSize*2), random.randint(iconSize, worldy-2*iconSize), 'enemy2.png')  # spawn enemy
+    enemy1 = Enemy(random.randint(1, 19)*iconSize, random.randint(1, 13)*iconSize, 'enemy1.png')  # spawn enemy
+    enemy2 = Enemy(random.randint(1, 19)*iconSize, random.randint(1, 13)*iconSize, 'enemy2.png')  # spawn enemy
     enemy_list = pygame.sprite.Group()  # create enemy group
     enemy_list.add(enemy1)  # add enemy to group
     enemy_list.add(enemy2)  # add enemy to group
@@ -149,7 +149,7 @@ def game_loop():
             if bomb.timeToExplode <= 0:
                 bomb.explode(world, deWalls_list, bomberman)
 
-        world.blit(bomberman.image, (bomberman.x, bomberman.y))
+        #world.blit(bomberman.image, (bomberman.x, bomberman.y))
 
 
         # player.update(enemy_list, world)
@@ -164,6 +164,17 @@ def game_loop():
         enemy_list.draw(world)  # refresh enemies
         for e in enemy_list:
             e.move()
+
+        world.blit(bomberman.image, (bomberman.x, bomberman.y))
+
+        bomberman.rect.x = bomberman.x
+        bomberman.rect.y = bomberman.y
+
+        hit_list = pygame.sprite.spritecollide(bomberman, enemy_list, False)
+
+        if hit_list.__len__() > 0:
+            bomberman.lives_down(world)
+
 
         pygame.display.flip()
         clock.tick(fps)
