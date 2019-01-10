@@ -12,6 +12,7 @@ import random
 from Bomb import *
 from Bomberman import *
 from GreenSurface import *
+from Timer import *
 
 def game_loop():
     fps = 40  # frame rate
@@ -97,7 +98,7 @@ def game_loop():
     print(wallsPositions)
 
     bomb_list = pygame.sprite.Group()  # create bomb list
-
+    t=Timer()
     while ok:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -175,7 +176,7 @@ def game_loop():
         if hit_list.__len__() > 0:
             bomberman.lives_down(world)
 
-
+        t.tik_tack(world)
         pygame.display.flip()
         clock.tick(fps)
 
