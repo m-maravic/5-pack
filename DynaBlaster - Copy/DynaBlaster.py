@@ -109,9 +109,7 @@ def game_loop():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    bomb = Bomb('bonb.png')
-                    bomb.rect.x = player.rect.x
-                    bomb.rect.y = player.rect.y
+                    bomb = Bomb(bomberman.x, bomberman.y)
                     bomb_list.add(bomb)  # add bomb to group
                 if event.key == ord('a'):
                     bomberman.move('r', enemy_list, world)
