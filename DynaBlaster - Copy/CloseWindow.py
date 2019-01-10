@@ -1,70 +1,10 @@
 import pygame
 import time
 from DynaBlaster import *
+from definitions import *
+#from StartWindow import *
 
 pygame.init()
-
-display_width = 800
-display_height = 600
-
-gameDisplay = pygame.display.set_mode((display_width,display_height))
-
-
-pygame.display.set_caption('Tanks')
-
-#icon = pygame.image.load("apple.png")
-#pygame.display.set_icon(icon)
-
-white = (255,255,255)
-black = (0,0,0)
-
-
-red = (200,0,0)
-light_red = (255,0,0)
-
-yellow = (200,200,0)
-light_yellow = (255,255,0)
-
-green = (34,177,76)
-light_green = (0,255,0)
-
-clock = pygame.time.Clock()
-
-tankWidth = 40
-tankHeight = 20
-
-turretWidth = 5
-wheelWidth = 5
-
-ground_height = 35
-
-smallfont = pygame.font.SysFont("comicsansms", 25)
-medfont = pygame.font.SysFont("comicsansms", 50)
-largefont = pygame.font.SysFont("comicsansms", 85)
-
-
-def text_objects(text, color, size="small"):
-    if size == "small":
-        textSurface = smallfont.render(text, True, color)
-    if size == "medium":
-        textSurface = medfont.render(text, True, color)
-    if size == "large":
-        textSurface = largefont.render(text, True, color)
-
-    return textSurface, textSurface.get_rect()
-
-
-def text_to_button(msg, color, buttonx, buttony, buttonwidth, buttonheight, size="small"):
-    textSurf, textRect = text_objects(msg, color, size)
-    textRect.center = ((buttonx + (buttonwidth / 2)), buttony + (buttonheight / 2))
-    gameDisplay.blit(textSurf, textRect)
-
-
-def message_to_screen(msg, color, y_displace=0, size="small"):
-    textSurf, textRect = text_objects(msg, color, size)
-    textRect.center = (int(display_width / 2), int(display_height / 2) + y_displace)
-    gameDisplay.blit(textSurf, textRect)
-
 
 def button(text, x, y, width, height, inactive_color, active_color, action=None):
     cur = pygame.mouse.get_pos()
@@ -77,14 +17,16 @@ def button(text, x, y, width, height, inactive_color, active_color, action=None)
                 pygame.quit()
                 quit()
 
-            if action == "controls":
+            if action == "multiplay":#ovde bih stavila multiplay
                 pass
 
-            if action == "play":
-                game_loop()
+            if action == "playAgain":
+                pass
+                #game_loop()
 
-            if action == "main":
-                game_intro()
+            if action == "menu":
+                pass
+                #game_intro()
 
     else:
         pygame.draw.rect(gameDisplay, inactive_color, (x, y, width, height))
@@ -107,9 +49,9 @@ def game_over():
 
 
 
-        button("play Again", 150,500,150,50, green, light_green, action="play")
-        button("controls", 350,500,100,50, yellow, light_yellow, action="controls")
-        button("quit", 550,500,100,50, red, light_red, action ="quit")
+        button("play Again", 150,400,150,50, green, light_green, action="playAgain")
+        button("multiplay", 375,400,100,50, yellow, light_yellow, action="multiplay")
+        button("quit", 550,400,100,50, red, light_red, action ="quit")
 
 
         pygame.display.update()
@@ -141,5 +83,6 @@ def you_win():
         pygame.display.update()
 
         clock.tick(15)
+
 
 
