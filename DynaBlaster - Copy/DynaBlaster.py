@@ -131,7 +131,6 @@ def game_loop():
         stWalls_list.draw(world)
         deWalls_list.draw(world)
 
-        world.blit(bomberman.image, (bomberman.x, bomberman.y))
 
         # Game logic.
         to_remove = pygame.sprite.Group()
@@ -148,7 +147,9 @@ def game_loop():
             # I'm just drawing the explosion lines each
             # frame when the time is below 0.
             if bomb.timeToExplode <= 0:
-                bomb.explode(world, deWalls_list)
+                bomb.explode(world, deWalls_list, bomberman)
+
+        world.blit(bomberman.image, (bomberman.x, bomberman.y))
 
 
         # player.update(enemy_list, world)

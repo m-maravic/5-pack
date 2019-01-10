@@ -23,7 +23,7 @@ class Bomb(pygame.sprite.Sprite):
         # Subtract the passed time `dt` from the timer each frame.
         self.timeToExplode -= dt
 
-    def explode(self, screen, deWalls_list):
+    def explode(self, screen, deWalls_list, bomberman):
         self.image = pygame.image.load(os.path.join('Slike', 'explodeStart.png')).convert()
         self.image.set_colorkey((255, 255, 255))
         self.imageLeft = pygame.image.load(os.path.join('Slike', 'explodeLeft.png')).convert()
@@ -41,6 +41,7 @@ class Bomb(pygame.sprite.Sprite):
         screen.blit(self.imageUp, (self.rect.x , self.rect.y - iconSize))
         screen.blit(self.imageDown, (self.rect.x , self.rect.y + iconSize))
 
+        #ako je zid u opsegu eksplozije
         for wall in deWalls_list:
             if wall.rect.x == self.rect.x-iconSize and wall.rect.y == self.rect.y:
                 deWalls_list.remove(wall)
@@ -57,6 +58,15 @@ class Bomb(pygame.sprite.Sprite):
 
         deWalls_list.draw(screen)
 
+        #ako je igrac u opsegu eksplozije
+        if bomberman.x == self.rect.x - iconSize and bomberman.y == self.rect.y:
+           bomberman.lives_down(screen)
+        if bomberman.x == self.rect.x + iconSize and bomberman.y == self.rect.y:
+            bomberman.lives_down(screen)
+        if bomberman.x == self.rect.x and bomberman.y == self.rect.y + iconSize:
+            bomberman.lives_down(screen)
+        if bomberman.x == self.rect.x and bomberman.y == self.rect.y - iconSize:
+            bomberman.lives_down(screen)
 
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))

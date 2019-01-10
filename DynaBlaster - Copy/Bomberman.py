@@ -76,6 +76,11 @@ class Bomberman(pygame.sprite.Sprite):
         if self.total_lives == 0:
             pygame.quit()
 
+        #vrati ga na pocetak
+        self.x = iconSize
+        self.y = iconSize
+
+
     # prikaz zivota
     def show_lives(self, world):
         self.health = self.health_cfg.render('Lives: ' + str(self.total_lives), True, (255, 230, 0))
