@@ -8,7 +8,6 @@ visina = 13
 
 class Bomberman(pygame.sprite.Sprite):
     def __init__(self):
-        # initialisation des images et gestion de la transparance
         self.image = pygame.image.load(os.path.join('Slike', 'playerup.png')).convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
@@ -20,49 +19,47 @@ class Bomberman(pygame.sprite.Sprite):
         self.score_cfg = pygame.font.SysFont('Helvetica', 20, True)
         self.health_cfg = pygame.font.SysFont('Helvetica', 20, True)
 
-        # position de base du perso
         self.case_x = 1
         self.case_y = 1
-        self.x = iconSize * self.case_x #taille_sprite = 40
+        self.x = iconSize * self.case_x
         self.y = iconSize * self.case_y
 
 
     def move(self, direction, enemy_list, world):
-        if direction == "l":
-            if self.case_x < (sirina - 1): #15
-                #if self.niveau.structure[self.case_y][self.case_x + 1] == "s":
+        if direction == "r":
+            if self.case_x < (sirina - 1):
                 if wallsPositions[self.case_x+1][self.case_y] == 0:
                     self.case_x += 1
                     self.x = self.case_x * iconSize
 
-        if direction == "r":
+        if direction == "l":
             if self.case_x > 0:
-                #if self.niveau.structure[self.case_y][self.case_x - 1] == "s":
                 if wallsPositions[self.case_x-1][self.case_y] == 0:
                     self.case_x -= 1
                     self.x = self.case_x * iconSize
 
         if direction == "d":
             if self.case_y > 0:
-                #if self.niveau.structure[self.case_y - 1][self.case_x] == "s":
                 if wallsPositions[self.case_x][self.case_y-1] == 0:
                     self.case_y -= 1
                     self.y = self.case_y * iconSize
 
         if direction == "u":
             if self.case_y < (visina - 1):
-                #if self.niveau.structure[self.case_y + 1][self.case_x] == "s":
                 if wallsPositions[self.case_x][self.case_y+1] == 0:
                     self.case_y += 1
                     self.y = self.case_y * iconSize
 
+
+    def update(self, enemy_list, world):
         # ako se sudari sa neprijateljem
         hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
 
         if hit_list.__len__() > 0:
-            self.x = 50
-            self.y = 50
+            self.rect.x = 50
+            self.rect.y = 50
             self.lives_down(world)
+
 
  # score se uvecava kad ubije nekog
     def score_up(self):

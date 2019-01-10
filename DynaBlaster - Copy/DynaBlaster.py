@@ -112,9 +112,9 @@ def game_loop():
                     bomb = Bomb(bomberman.x, bomberman.y)
                     bomb_list.add(bomb)  # add bomb to group
                 if event.key == ord('a'):
-                    bomberman.move('r', enemy_list, world)
-                elif event.key == ord('d'):
                     bomberman.move('l', enemy_list, world)
+                elif event.key == ord('d'):
+                    bomberman.move('r', enemy_list, world)
                 elif event.key == ord('w'):
                     bomberman.move('d', enemy_list, world)
                 elif event.key == ord('s'):
@@ -148,7 +148,7 @@ def game_loop():
             # I'm just drawing the explosion lines each
             # frame when the time is below 0.
             if bomb.timeToExplode <= 0:
-                bomb.explode(world)
+                bomb.explode(world, deWalls_list)
 
 
         # player.update(enemy_list, world)

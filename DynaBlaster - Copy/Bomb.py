@@ -1,6 +1,7 @@
 import pygame
 import os
 import time
+from definitions import*
 
 iconSize = 40
 
@@ -22,7 +23,7 @@ class Bomb(pygame.sprite.Sprite):
         # Subtract the passed time `dt` from the timer each frame.
         self.timeToExplode -= dt
 
-    def explode(self, screen):
+    def explode(self, screen, deWalls_list):
         self.image = pygame.image.load(os.path.join('Slike', 'explodeStart.png')).convert()
         self.image.set_colorkey((255, 255, 255))
         self.imageLeft = pygame.image.load(os.path.join('Slike', 'explodeLeft.png')).convert()
@@ -39,6 +40,23 @@ class Bomb(pygame.sprite.Sprite):
         screen.blit(self.imageRight, (self.rect.x + iconSize, self.rect.y))
         screen.blit(self.imageUp, (self.rect.x , self.rect.y - iconSize))
         screen.blit(self.imageDown, (self.rect.x , self.rect.y + iconSize))
+
+        for wall in deWalls_list:
+            if wall.rect.x == self.rect.x-iconSize and wall.rect.y == self.rect.y:
+                deWalls_list.remove(wall)
+                wallsPositions[round((self.rect.x-iconSize)/iconSize)][round(self.rect.y/iconSize)] = 0
+            if wall.rect.x == self.rect.x+iconSize and wall.rect.y == self.rect.y:
+                deWalls_list.remove(wall)
+                wallsPositions[round((self.rect.x+iconSize)/iconSize)][round(self.rect.y/iconSize)] = 0
+            if wall.rect.x == self.rect.x and wall.rect.y == self.rect.y+iconSize:
+                deWalls_list.remove(wall)
+                wallsPositions[round(self.rect.x/iconSize)][round((self.rect.y+iconSize)/iconSize)] = 0
+            if wall.rect.x == self.rect.x and wall.rect.y == self.rect.y - iconSize:
+                deWalls_list.remove(wall)
+                wallsPositions[round(self.rect.x/iconSize)][round((self.rect.y-iconSize)/iconSize)] = 0
+
+        deWalls_list.draw(screen)
+
 
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))
