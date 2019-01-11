@@ -65,9 +65,13 @@ class Bomberman(pygame.sprite.Sprite):
         self.total_score += self.kill_points
 
     # prikaz score
-    def show_score(self, world):
-        self.score = self.score_cfg.render('Score: ' + str(self.total_score), True, (255, 230, 0))
-        world.blit(self.score, (10, 10))
+    def show_score(self, world, no):  #no je redni broj igraca
+        if no == 1:
+            self.score = self.score_cfg.render('Score1: ' + str(self.total_score), True, (255, 230, 0))
+            world.blit(self.score, (10, 10))
+        else:
+            self.score = self.score_cfg.render('Score2: ' + str(self.total_score), True, (255, 230, 0))
+            world.blit(self.score, (580, 10))
 
     # smanjenje zivota
     def lives_down(self, world, no):
@@ -85,7 +89,10 @@ class Bomberman(pygame.sprite.Sprite):
 
 
     # prikaz zivota
-    def show_lives(self, world):
-        self.health = self.health_cfg.render('Lives: ' + str(self.total_lives), True, (255, 230, 0))
-        world.blit(self.health, (150, 10))
-
+    def show_lives(self, world, no):
+        if no == 1:
+            self.health = self.health_cfg.render('Lives1: ' + str(self.total_lives), True, (255, 230, 0))
+            world.blit(self.health, (100, 10))
+        else:
+            self.health = self.health_cfg.render('Lives2: ' + str(self.total_lives), True, (255, 230, 0))
+            world.blit(self.health, (670, 10))

@@ -12,7 +12,7 @@ from Bomb import *
 from Bomberman import *
 from Timer import *
 
-def game_loop():
+def game_loop(playersNo):
     fps = 40  # frame rate
     clock = pygame.time.Clock()
     pygame.init()
@@ -25,7 +25,8 @@ def game_loop():
 
 
     bomberman = Bomberman(img,1,1)
-    bomberman2 = Bomberman(img2,17,11)
+    if playersNo == 2:
+        bomberman2 = Bomberman(img2,17,11)
 
     # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
     enemy1 = Enemy(random.randint(1, 19)*iconSize, random.randint(1, 13)*iconSize, 'enemy1.png')  # spawn enemy
@@ -72,7 +73,9 @@ def game_loop():
 
     # test
     bomb_list = pygame.sprite.Group()  # create bomb list
-    bomb_list2 = pygame.sprite.Group()
+
+    if playersNo == 2:
+        bomb_list2 = pygame.sprite.Group()
 
     t=Timer()
     while ok:
@@ -124,7 +127,8 @@ def game_loop():
         deWalls_list.draw(world)
 
         bomb_list.draw(world)
-        bomb_list2.draw(world)
+        if playersNo == 2:
+            bomb_list2.draw(world)
 
         # Game logic.
         to_remove = pygame.sprite.Group()
@@ -144,37 +148,32 @@ def game_loop():
                 bomb.explode(world, deWalls_list, bomberman, 1)
 
         #bombe drugog igraca
-        for bomb2 in bomb_list2:
-            bomb2.update(dt)
-            # Add old bombs to the to_remove set.
-            if bomb2.timeToExplode <= -3000:
-                bomb_list2.remove(bomb2)
+        if playersNo == 2:
+            for bomb2 in bomb_list2:
+                bomb2.update(dt)
+                # Add old bombs to the to_remove set.
+                if bomb2.timeToExplode <= -3000:
+                    bomb_list2.remove(bomb2)
+            for bomb2 in bomb_list2:
+                bomb2.draw(world)
+                # I'm just drawing the explosion lines each
+                # frame when the time is below 0.
+                if bomb2.timeToExplode <= 0:
+                    bomb2.explode(world, deWalls_list, bomberman2, 2)
 
-        for bomb2 in bomb_list2:
-            bomb2.draw(world)
-            # I'm just drawing the explosion lines each
-            # frame when the time is below 0.
-            if bomb2.timeToExplode <= 0:
-                bomb2.explode(world, deWalls_list, bomberman2, 2)
-
-        #world.blit(bomberman.image, (bomberman.x, bomberman.y))
-
-
-        # player.update(enemy_list, world)
-        # player_list.draw(world)  # refresh player position
-
-
-        bomberman.show_score(world)
-        bomberman.show_lives(world)
-        # player.show_score(world)
-        # player.show_lives(world)
+        bomberman.show_score(world, 1)
+        bomberman.show_lives(world, 1)
+        if playersNo == 2:
+            bomberman2.show_score(world, 2)
+            bomberman2.show_lives(world, 2)
 
         enemy_list.draw(world)  # refresh enemies
         for e in enemy_list:
             e.move()
 
         world.blit(bomberman.image, (bomberman.x, bomberman.y))
-        world.blit(bomberman2.image, (bomberman2.x, bomberman2.y))
+        if playersNo == 2:
+            world.blit(bomberman2.image, (bomberman2.x, bomberman2.y))
 
         bomberman.rect.x = bomberman.x
         bomberman.rect.y = bomberman.y
@@ -182,7 +181,7 @@ def game_loop():
         hit_list = pygame.sprite.spritecollide(bomberman, enemy_list, False)
 
         if hit_list.__len__() > 0:
-            bomberman.lives_down(world)
+            bomberman.lives_down(world,1)
 
         t.tik_tack(world)
         pygame.display.flip()

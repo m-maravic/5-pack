@@ -18,10 +18,10 @@ def button(text, x, y, width, height, inactive_color, active_color, action=None)
                 quit()
 
             if action == "multiplay":
-                pass
+                game_loop(2)
 
             if action == "play":
-                game_loop()
+                game_loop(1)
 
     else:
         pygame.draw.rect(gameDisplay, inactive_color, (x, y, width, height))
