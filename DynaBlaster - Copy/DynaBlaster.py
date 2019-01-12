@@ -138,8 +138,6 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
         # Game logic.
         to_remove = pygame.sprite.Group()
 
-        gameOver1 = 0
-        gameOver2 = 0
 
         # Update bombs. Pass the `dt` to the bomb instances.
         for bomb in bomb_list:
@@ -155,6 +153,8 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
             if bomb.timeToExplode <= 0:
                 bomb.explode(world, deWalls_list, bomberman, 1, enemy_list)
 
+        bomberman.update(1)
+
         #bombe drugog igraca
         if playersNo == 2:
             for bomb2 in bomb_list2:
@@ -167,7 +167,10 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
                 # I'm just drawing the explosion lines each
                 # frame when the time is below 0.
                 if bomb2.timeToExplode <= 0:
-                    gameOver2 = bomb2.explode(world, deWalls_list, bomberman2, 2)
+                    bomb2.explode(world, deWalls_list, bomberman2, 2, enemy_list)
+
+            bomberman2.update(2)
+
 
         bomberman.show_score(world, 1)
         bomberman.show_lives(world, 1)
@@ -200,8 +203,12 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
         pygame.display.flip()
         clock.tick(fps)
 
-        if gameOver1 == 1 or gameOver2 == 1:
+        if bomberman.total_lives == 0:
             game_over()
+
+        if playersNo == 2:
+            if bomberman2.total_lives == 0:
+                game_over()
 
 
 

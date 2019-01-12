@@ -25,6 +25,9 @@ class Bomberman(pygame.sprite.Sprite):
         self.x = iconSize * self.case_x
         self.y = iconSize * self.case_y
 
+        self.hidden = False
+        self.hide_timer = pygame.time.get_ticks()
+
     def move(self, direction, enemy_list, world):
         if direction == "r":
             if self.case_x < (sirina - 1):
@@ -72,19 +75,40 @@ class Bomberman(pygame.sprite.Sprite):
             self.score = self.score_cfg.render('Score2: ' + str(self.total_score), True, (255, 230, 0))
             world.blit(self.score, (580, 10))
 
+    def hide(self):
+        self.hidden = True
+        self.hide_timer = pygame.time.get_ticks()
+        self.x = worldy   #privremeno ga sklanjamo sa ekrana
+        self.y = worldy + 80
+
+    def update(self, no):
+        if self.hidden and pygame.time.get_ticks() - self.hide_timer > 3000:
+            self.hidden = False
+
+            if no == 1:
+                #vrati ga na pocetak
+                self.x = iconSize
+                self.y = iconSize
+            else:
+                self.x = 17*iconSize
+                self.y = 11*iconSize
+
+
     # smanjenje zivota
     def lives_down(self, world, no):
         self.total_lives -= 1
         # if self.total_lives == 0:
         #     pygame.quit()
 
-        if no == 1:
-            #vrati ga na pocetak
-            self.x = iconSize
-            self.y = iconSize
-        else:
-            self.x = 17*iconSize
-            self.y = 11*iconSize
+        self.hide()
+
+        # if no == 1:
+        #     #vrati ga na pocetak
+        #     self.x = iconSize
+        #     self.y = iconSize
+        # else:
+        #     self.x = 17*iconSize
+        #     self.y = 11*iconSize
 
 
     # prikaz zivota

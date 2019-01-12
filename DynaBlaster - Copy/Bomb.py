@@ -58,9 +58,10 @@ class Bomb(pygame.sprite.Sprite):
 
         deWalls_list.draw(screen)
 
+
         # ako je igrac u opsegu eksplozije
         if bomberman.x == self.rect.x - iconSize and bomberman.y == self.rect.y:
-           bomberman.lives_down(screen, no)
+            bomberman.lives_down(screen, no)
         elif bomberman.x == self.rect.x + iconSize and bomberman.y == self.rect.y:
             bomberman.lives_down(screen, no)
         elif bomberman.x == self.rect.x and bomberman.y == self.rect.y + iconSize:
