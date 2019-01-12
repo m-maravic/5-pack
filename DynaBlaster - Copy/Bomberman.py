@@ -91,7 +91,7 @@ class Bomberman(pygame.sprite.Sprite):
     def show_lives(self, world, no):
         if no == 1:
             self.health = self.health_cfg.render('Lives1: ' + str(self.total_lives), True, (255, 230, 0))
-            world.blit(self.health, (100, 10))
+            world.blit(self.health, (120, 10))
         else:
             self.health = self.health_cfg.render('Lives2: ' + str(self.total_lives), True, (255, 230, 0))
-            world.blit(self.health, (670, 10))
+            world.blit(self.health, (690, 10))

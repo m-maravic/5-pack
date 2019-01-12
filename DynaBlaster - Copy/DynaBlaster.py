@@ -153,7 +153,7 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
             # I'm just drawing the explosion lines each
             # frame when the time is below 0.
             if bomb.timeToExplode <= 0:
-                gameOver1 = bomb.explode(world, deWalls_list, bomberman, 1)
+                bomb.explode(world, deWalls_list, bomberman, 1, enemy_list)
 
         #bombe drugog igraca
         if playersNo == 2:
