@@ -2,6 +2,7 @@ import pygame
 from threading import Thread, Timer
 from multiprocessing import Pipe
 import time
+import os
 from CloseWindow import *
 
 # Define some colorsc
