@@ -8,14 +8,14 @@ sirina = 19
 visina = 13
 
 class Bomberman(pygame.sprite.Sprite):
-    def __init__(self, img, case1, case2):
+    def __init__(self, img, case1, case2): #prosledjujemo slicicu i pocetnu poziciju igraca
         self.image = pygame.image.load(os.path.join('Slike',img)).convert()
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
 
         self.total_score = 0
         self.kill_points = 10
-        self.total_lives = 10
+        self.total_lives = 3
         # score
         self.score_cfg = pygame.font.SysFont('Helvetica', 20, True)
         self.health_cfg = pygame.font.SysFont('Helvetica', 20, True)
@@ -24,7 +24,6 @@ class Bomberman(pygame.sprite.Sprite):
         self.case_y = case2
         self.x = iconSize * self.case_x
         self.y = iconSize * self.case_y
-
 
     def move(self, direction, enemy_list, world):
         if direction == "r":
@@ -76,8 +75,8 @@ class Bomberman(pygame.sprite.Sprite):
     # smanjenje zivota
     def lives_down(self, world, no):
         self.total_lives -= 1
-        if self.total_lives == 0:
-            pygame.quit()
+        # if self.total_lives == 0:
+        #     pygame.quit()
 
         if no == 1:
             #vrati ga na pocetak

@@ -70,5 +70,12 @@ class Bomb(pygame.sprite.Sprite):
         if bomberman.x == self.rect.x and bomberman.y == self.rect.y:
             bomberman.lives_down(screen, no)
 
+        if bomberman.total_lives == 0:
+            return 1
+        else:
+            return 0
+
+
+
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))

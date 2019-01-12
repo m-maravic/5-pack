@@ -12,7 +12,7 @@ from Bomb import *
 from Bomberman import *
 from Timer import *
 
-def game_loop(playersNo):
+def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
     fps = 40  # frame rate
     clock = pygame.time.Clock()
     pygame.init()
@@ -102,17 +102,18 @@ def game_loop(playersNo):
                     bomberman.move('d', enemy_list, world)
 
                 #drugi igrac
-                elif event.key == pygame.K_LEFT:
-                    bomberman2.move('l', enemy_list, world)
-                elif event.key == pygame.K_RIGHT:
-                    bomberman2.move('r', enemy_list, world)
-                elif event.key == pygame.K_DOWN:
-                    bomberman2.move('d', enemy_list, world)
-                elif event.key == pygame.K_UP:
-                    bomberman2.move('u', enemy_list, world)
-                elif event.key == pygame.K_SPACE:
-                    bomb2 = Bomb(bomberman2.x, bomberman2.y)
-                    bomb_list2.add(bomb2)  # add bomb to group
+                if playersNo == 2:
+                    if event.key == pygame.K_LEFT:
+                        bomberman2.move('l', enemy_list, world)
+                    elif event.key == pygame.K_RIGHT:
+                        bomberman2.move('r', enemy_list, world)
+                    elif event.key == pygame.K_DOWN:
+                        bomberman2.move('d', enemy_list, world)
+                    elif event.key == pygame.K_UP:
+                        bomberman2.move('u', enemy_list, world)
+                    elif event.key == pygame.K_SPACE:
+                        bomb2 = Bomb(bomberman2.x, bomberman2.y)
+                        bomb_list2.add(bomb2)  # add bomb to group
 
 
                 if event.key == ord('q'):
@@ -133,6 +134,9 @@ def game_loop(playersNo):
         # Game logic.
         to_remove = pygame.sprite.Group()
 
+        gameOver1 = 0
+        gameOver2 = 0
+
         # Update bombs. Pass the `dt` to the bomb instances.
         for bomb in bomb_list:
             bomb.update(dt)
@@ -145,7 +149,7 @@ def game_loop(playersNo):
             # I'm just drawing the explosion lines each
             # frame when the time is below 0.
             if bomb.timeToExplode <= 0:
-                bomb.explode(world, deWalls_list, bomberman, 1)
+                gameOver1 = bomb.explode(world, deWalls_list, bomberman, 1)
 
         #bombe drugog igraca
         if playersNo == 2:
@@ -159,7 +163,7 @@ def game_loop(playersNo):
                 # I'm just drawing the explosion lines each
                 # frame when the time is below 0.
                 if bomb2.timeToExplode <= 0:
-                    bomb2.explode(world, deWalls_list, bomberman2, 2)
+                    gameOver2 = bomb2.explode(world, deWalls_list, bomberman2, 2)
 
         bomberman.show_score(world, 1)
         bomberman.show_lives(world, 1)
@@ -186,6 +190,10 @@ def game_loop(playersNo):
         t.tik_tack(world)
         pygame.display.flip()
         clock.tick(fps)
+
+        if gameOver1 == 1 or gameOver2 == 1:
+            game_over()
+
 
 
     # if __name__ == '__main__':
