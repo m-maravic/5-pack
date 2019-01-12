@@ -11,6 +11,8 @@ import random
 from Bomb import *
 from Bomberman import *
 from Timer import *
+import threading
+
 
 def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
     fps = 40  # frame rate
@@ -28,12 +30,7 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
     if playersNo == 2:
         bomberman2 = Bomberman(img2,17,11)
 
-    # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
-    enemy1 = Enemy(random.randint(1, 19)*iconSize, random.randint(1, 13)*iconSize, 'enemy1.png')  # spawn enemy
-    enemy2 = Enemy(random.randint(1, 19)*iconSize, random.randint(1, 13)*iconSize, 'enemy2.png')  # spawn enemy
-    enemy_list = pygame.sprite.Group()  # create enemy group
-    enemy_list.add(enemy1)  # add enemy to group
-    enemy_list.add(enemy2)  # add enemy to group
+    enemy_flag = True;
 
     stWalls_list = pygame.sprite.Group()  # create static walls group
     deWalls_list = pygame.sprite.Group()  # create destroyableWalls group
@@ -71,6 +68,13 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
                             deWalls_list.add(deWall)
                             wallsPositions[round(deWall.rect.x / iconSize)][round(deWall.rect.y / iconSize)] = 2  # za unistive zidove
 
+    # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
+    enemy1 = Enemy(random.randint(1, 19) * iconSize, random.randint(1, 13) * iconSize, 'enemy1.png')  # spawn enemy
+    #enemy2 = Enemy(random.randint(1, 19) * iconSize, random.randint(1, 13) * iconSize, 'enemy2.png')  # spawn enemy
+    enemy_list = pygame.sprite.Group()  # create enemy group
+    enemy_list.add(enemy1)  # add enemy to group
+    #enemy_list.add(enemy2)  # add enemy to group
+
     # test
     bomb_list = pygame.sprite.Group()  # create bomb list
 
@@ -89,7 +93,7 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
 
             #prvi igrac
             if event.type == pygame.KEYDOWN:
-                if event.key == ord('f'):
+                if event.key == pygame.K_LCTRL:
                     bomb = Bomb(bomberman.x, bomberman.y)
                     bomb_list.add(bomb)  # add bomb to group
                 if event.key == ord('a'):
@@ -98,7 +102,7 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
                     bomberman.move('r', enemy_list, world)
                 elif event.key == ord('w'):
                     bomberman.move('u', enemy_list, world)
-                elif event.key == ord('x'):
+                elif event.key == ord('s'):
                     bomberman.move('d', enemy_list, world)
 
                 #drugi igrac
@@ -171,9 +175,14 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
             bomberman2.show_score(world, 2)
             bomberman2.show_lives(world, 2)
 
+        threads = []
         enemy_list.draw(world)  # refresh enemies
+        #if enemy_flag == True:
         for e in enemy_list:
-            e.move()
+            tr = threading.Thread(target=e.move())
+            threads.append(tr)
+            tr.start()
+           # enemy_flag = False
 
         world.blit(bomberman.image, (bomberman.x, bomberman.y))
         if playersNo == 2:
@@ -185,7 +194,7 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
         hit_list = pygame.sprite.spritecollide(bomberman, enemy_list, False)
 
         if hit_list.__len__() > 0:
-            bomberman.lives_down(world,1)
+            bomberman.lives_down(world, 1)
 
         t.tik_tack(world)
         pygame.display.flip()

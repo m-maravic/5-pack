@@ -1,6 +1,7 @@
 from enum import Enum
 import  random
 import pygame
+from Coordinates import *
 
 pygame.init()
 worldx = 760
@@ -23,8 +24,18 @@ def make_matrix():
     Matrix = [[0 for x in range(20)] for y in range(20)]
     return  Matrix
 
+wallsPositions = make_matrix()
 
-wallsPositions= make_matrix()
+def find_free_spot():
+    free_spots = []
+    for x in range(0,19):
+        for y in range(0,13):
+            if wallsPositions[x][y] == 0:
+                coordinate = Coordinates(x, y)
+                free_spots.append(coordinate)
+    return free_spots
+
+
 
 #zajednicka logika za prozore (Start i Close)
 gameDisplay = pygame.display.set_mode((worldx, worldy))
