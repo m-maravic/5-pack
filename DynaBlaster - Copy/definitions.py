@@ -28,8 +28,8 @@ wallsPositions = make_matrix()
 
 def find_free_spot():
     free_spots = []
-    for x in range(0,19):
-        for y in range(0,13):
+    for x in range(0,18):
+        for y in range(0,12):
             if wallsPositions[x][y] == 0:
                 coordinate = Coordinates(x, y)
                 free_spots.append(coordinate)

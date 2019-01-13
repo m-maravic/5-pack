@@ -12,16 +12,19 @@ worldx = 760
 worldy = 520
 iconSize = 40
 
+
 class Enemy(pygame.sprite.Sprite):
     '''
     Spawn an enemy
     '''
-    def __init__(self,x,y,img):
+
+    def __init__(self,img):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join('Slike',img))
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
-        self.direction = 'r'
+
+        self.direction = self.set_random_direction()
 
         free_spots = find_free_spot() # lista slobodnih pozicija u matrici
         index = random.randint(0, len(free_spots)-1) # uzimamo random index iz liste slobodnih pozicija
@@ -30,29 +33,19 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = free_spots[index].y*iconSize
         self.counter = 0  # counter variable
 
-    # def move(self):
-    #     distance = 80
-    #     speed = 1
-    #
-    #     if self.rect.x < iconSize:
-    #         self.rect.x += speed
-    #         self.counter = 80
-    #     elif self.rect.x > worldx-iconSize*2:
-    #         self.rect.x -= speed
-    #         self.counter = 80
-    #     else:
-    #         if self.counter >= 0 and self.counter <= distance:
-    #             self.rect.x += speed
-    #         elif self.counter >= distance and self.counter <= distance * 2:
-    #             self.rect.x -= speed
-    #         else:
-    #             self.counter = 0
-    #
-    #     self.counter += 1
+    def set_random_direction(self):
+        start_direction = random.randint(1, 4)
+        if start_direction == 1:
+            return 'r'
+        elif start_direction == 2:
+            return 'l'
+        elif start_direction == 3:
+            return 'u'
+        elif start_direction == 4:
+            return 'd'
 
 
     def update(self):
-
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
 
@@ -62,6 +55,19 @@ class Enemy(pygame.sprite.Sprite):
 
         current_x = math.floor(self.rect.x / iconSize)
         current_y = math.floor(self.rect.y / iconSize)
+
+        # ono deljenje ispod nije radilo kada pozicija nije deljiva sa 40 (npr. 79/40 neprijatelj tretira kao 1 u matrici)
+        # ovaj if omogucava da se mapiranje sa piksela na matricu ispod desava samo za korektne slucajeve
+        if self.rect.x%iconSize != 0 or self.rect.y%iconSize != 0:
+            if self.direction == 'r':
+                self.rect.x += speed
+            if self.direction == 'l':
+                self.rect.x -= speed
+            if self.direction == 'd':
+                self.rect.y -= speed
+            if self.direction == 'u':
+                self.rect.y += speed
+            return
 
         if wallsPositions[current_x + 1][current_y] == 0 and self.direction == 'r': # dal moze DESNO
             self.rect.x += speed

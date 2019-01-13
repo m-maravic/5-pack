@@ -69,11 +69,11 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
                             wallsPositions[round(deWall.rect.x / iconSize)][round(deWall.rect.y / iconSize)] = 2  # za unistive zidove
 
     # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
-    enemy1 = Enemy(random.randint(1, 19) * iconSize, random.randint(1, 13) * iconSize, 'enemy1.png')  # spawn enemy
-    #enemy2 = Enemy(random.randint(1, 19) * iconSize, random.randint(1, 13) * iconSize, 'enemy2.png')  # spawn enemy
+    enemy1 = Enemy('enemy1.png')  # spawn enemy
+    enemy2 = Enemy('enemy2.png')  # spawn enemy
     enemy_list = pygame.sprite.Group()  # create enemy group
     enemy_list.add(enemy1)  # add enemy to group
-    #enemy_list.add(enemy2)  # add enemy to group
+    enemy_list.add(enemy2)  # add enemy to group
 
     # test
     bomb_list = pygame.sprite.Group()  # create bomb list
@@ -178,9 +178,10 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
             bomberman2.show_score(world, 2)
             bomberman2.show_lives(world, 2)
 
-        threads = []
+
         enemy_list.draw(world)  # refresh enemies
         #if enemy_flag == True:
+        threads = []
         for e in enemy_list:
             tr = threading.Thread(target=e.move())
             threads.append(tr)
