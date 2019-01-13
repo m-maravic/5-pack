@@ -11,6 +11,7 @@ import random
 from Bomb import *
 from Bomberman import *
 from Timer import *
+from Gifts import *
 import threading
 
 
@@ -80,6 +81,11 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
 
     if playersNo == 2:
         bomb_list2 = pygame.sprite.Group()
+
+    fObjekat = Gifts()
+    fObjekat.provera = True  # da bi samo jednom odradilo force
+    force_list = pygame.sprite.Group()  # pravim grupu
+    force_list.add(fObjekat)  # dodajem objekat u grupi
 
     t=Timer()
     while ok:
@@ -200,6 +206,23 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
 
         bomberman.rect.x = bomberman.x
         bomberman.rect.y = bomberman.y
+
+        if fObjekat.provera == True:
+            fObjekat.update(dt)
+            if fObjekat.TimeToAppear <= 0:
+                fObjekat.poziv(world, bomberman, dt, 1)  # za prvog icraca
+                if playersNo == 2:
+                    fObjekat.poziv(world, bomberman2, dt, 2)  # za drugog igraca
+
+                force_list.draw(world)  # onda iscrtaj listu sa tim objektima-samo jeda
+
+            # odradjuje
+            # if fObjekat.provera==False:
+        if fObjekat.TimeToAppear <= 0:
+            if fObjekat.provera == False:
+                force_list.remove(fObjekat)  # uklanja sa liste da bi se obrisala slika
+                #force_list.draw(world)  # iscrtava sa ponovo da bi se lista uklonila
+                force_list.draw(world)  # iscrtava sa ponovo da bi se lista uklonila
 
         hit_list = pygame.sprite.spritecollide(bomberman, enemy_list, False)
 

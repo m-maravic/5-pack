@@ -110,7 +110,8 @@ class Bomberman(pygame.sprite.Sprite):
         #     self.x = 17*iconSize
         #     self.y = 11*iconSize
 
-
+    def lives_up(self, world, no):
+        self.total_lives += 1
     # prikaz zivota
     def show_lives(self, world, no):
         if no == 1:
