@@ -91,39 +91,45 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
             # Get the passed time since last clock.tick call.
             dt = clock.tick(30)
 
+
+
+
             #prvi igrac
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LCTRL:
-                    bomb = Bomb(bomberman.x, bomberman.y)
-                    bomb_list.add(bomb)  # add bomb to group
-                if event.key == ord('a'):
-                    bomberman.move('l', enemy_list, world)
-                elif event.key == ord('d'):
-                    bomberman.move('r', enemy_list, world)
-                elif event.key == ord('w'):
-                    bomberman.move('u', enemy_list, world)
-                elif event.key == ord('s'):
-                    bomberman.move('d', enemy_list, world)
-
-                #drugi igrac
-                if playersNo == 2:
-                    if event.key == pygame.K_LEFT:
-                        bomberman2.move('l', enemy_list, world)
-                    elif event.key == pygame.K_RIGHT:
-                        bomberman2.move('r', enemy_list, world)
-                    elif event.key == pygame.K_DOWN:
-                        bomberman2.move('d', enemy_list, world)
-                    elif event.key == pygame.K_UP:
-                        bomberman2.move('u', enemy_list, world)
-                    elif event.key == pygame.K_SPACE:
-                        bomb2 = Bomb(bomberman2.x, bomberman2.y)
-                        bomb_list2.add(bomb2)  # add bomb to group
-
-
                 if event.key == ord('q'):
                     pygame.quit()
                     sys.exit()
                     ok = False
+                if not bomberman.hidden:
+                    if event.key == pygame.K_LCTRL:
+                        bomb = Bomb(bomberman.x, bomberman.y)
+                        bomb_list.add(bomb)  # add bomb to group
+                    if event.key == ord('a'):
+                        bomberman.move('l', enemy_list, world)
+                    elif event.key == ord('d'):
+                        bomberman.move('r', enemy_list, world)
+                    elif event.key == ord('w'):
+                        bomberman.move('u', enemy_list, world)
+                    elif event.key == ord('s'):
+                        bomberman.move('d', enemy_list, world)
+
+                #drugi igrac
+                if playersNo == 2:
+                    if not bomberman2.hidden:
+                        if event.key == pygame.K_LEFT:
+                            bomberman2.move('l', enemy_list, world)
+                        elif event.key == pygame.K_RIGHT:
+                            bomberman2.move('r', enemy_list, world)
+                        elif event.key == pygame.K_DOWN:
+                            bomberman2.move('d', enemy_list, world)
+                        elif event.key == pygame.K_UP:
+                            bomberman2.move('u', enemy_list, world)
+                        elif event.key == pygame.K_SPACE:
+                            bomb2 = Bomb(bomberman2.x, bomberman2.y)
+                            bomb_list2.add(bomb2)  # add bomb to group
+
+
+
 
         #    world.fill(BLACK)
         world.blit(backdrop, backdropbox)

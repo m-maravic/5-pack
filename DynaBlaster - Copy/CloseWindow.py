@@ -18,11 +18,10 @@ def button(text, x, y, width, height, inactive_color, active_color, action=None)
                 quit()
 
             if action == "multiplay":#ovde bih stavila multiplay
-                pass
+                game_loop(2)
 
             if action == "playAgain":
-                pass
-                #game_loop()
+                game_loop(1)
 
             if action == "menu":
                 pass
