@@ -14,7 +14,8 @@ class Bomberman(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.total_score = 0
-        self.kill_points = 10
+        self.enemy_points = 10
+        self.wall_points = 2
         self.total_lives = 3
         # score
         self.score_cfg = pygame.font.SysFont('Helvetica', 20, True)
@@ -56,8 +57,11 @@ class Bomberman(pygame.sprite.Sprite):
 
 
  # score se uvecava kad ubije nekog
-    def score_up(self):
-        self.total_score += self.kill_points
+    def score_up(self, points_type):
+        if points_type == 1: # prosledjujemo 1 kad ubijemo neprijatelja
+            self.total_score += self.enemy_points
+        elif points_type == 2: # prosledjujemo 1 kad unistimo zid
+            self.total_score += self.wall_points
 
     # prikaz score
     def show_score(self, world, no):  #no je redni broj igraca

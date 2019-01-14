@@ -46,15 +46,19 @@ class Bomb(pygame.sprite.Sprite):
             if wall.rect.x == self.rect.x-iconSize and wall.rect.y == self.rect.y:
                 deWalls_list.remove(wall)
                 wallsPositions[round((self.rect.x-iconSize)/iconSize)][round(self.rect.y/iconSize)] = 0
+                bomberman.score_up(2)
             if wall.rect.x == self.rect.x+iconSize and wall.rect.y == self.rect.y:
                 deWalls_list.remove(wall)
                 wallsPositions[round((self.rect.x+iconSize)/iconSize)][round(self.rect.y/iconSize)] = 0
+                bomberman.score_up(2)
             if wall.rect.x == self.rect.x and wall.rect.y == self.rect.y+iconSize:
                 deWalls_list.remove(wall)
                 wallsPositions[round(self.rect.x/iconSize)][round((self.rect.y+iconSize)/iconSize)] = 0
+                bomberman.score_up(2)
             if wall.rect.x == self.rect.x and wall.rect.y == self.rect.y - iconSize:
                 deWalls_list.remove(wall)
                 wallsPositions[round(self.rect.x/iconSize)][round((self.rect.y-iconSize)/iconSize)] = 0
+                bomberman.score_up(2)
 
         deWalls_list.draw(screen)
 
@@ -75,19 +79,19 @@ class Bomb(pygame.sprite.Sprite):
         for e in enemy_list:
             if e.rect.x == self.rect.x - iconSize and e.rect.y == self.rect.y:
                 enemy_list.remove(e)
-                bomberman.score_up()
-            elif e.rect.x == self.rect.x + iconSize and e.rect.y == self.rect.y:
+                bomberman.score_up(1)
+            elif e.rect.x == self.rect.x + 2*iconSize and e.rect.y == self.rect.y:
                 enemy_list.remove(e)
-                bomberman.score_up()
-            elif e.rect.x == self.rect.x and e.rect.y == self.rect.y + iconSize:
+                bomberman.score_up(1)
+            elif e.rect.x == self.rect.x and e.rect.y == self.rect.y + 2*iconSize:
                 enemy_list.remove(e)
-                bomberman.score_up()
+                bomberman.score_up(1)
             elif e.rect.x == self.rect.x and e.rect.y == self.rect.y - iconSize:
                 enemy_list.remove(e)
-                bomberman.score_up()
+                bomberman.score_up(1)
             elif e.rect.x == self.rect.x and e.rect.y == self.rect.y:
                 enemy_list.remove(e)
-                bomberman.score_up()
+                bomberman.score_up(1)
 
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))
