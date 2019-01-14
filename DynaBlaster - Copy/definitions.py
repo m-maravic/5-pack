@@ -25,6 +25,14 @@ def make_matrix():
     return  Matrix
 
 wallsPositions = make_matrix()
+wallsPositions[1][1] = -1
+wallsPositions[1][2] = -1
+wallsPositions[2][1] = -1
+wallsPositions[round((worldx-40)/iconSize)][round((worldy-40)/iconSize)] = -1
+wallsPositions[round((worldx-80)/iconSize)][round((worldy-40)/iconSize)] = -1
+wallsPositions[round((worldx-40)/iconSize)][round((worldy-80)/iconSize)] = -1
+
+
 
 def find_free_spot():
     free_spots = []

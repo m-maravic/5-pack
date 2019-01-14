@@ -15,7 +15,7 @@ class Timer():
                 t=round(run_time,0)
 
 
-                t1=190-t
+                t1=180-t
 
                 minuts=round(t1//60,0)
                 minuts=int(minuts)

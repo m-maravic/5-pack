@@ -69,22 +69,22 @@ class Enemy(pygame.sprite.Sprite):
                 self.rect.y += speed
             return
 
-        if wallsPositions[current_x + 1][current_y] == 0 and self.direction == 'r': # dal moze DESNO
+        if wallsPositions[current_x + 1][current_y] <= 0 and self.direction == 'r': # dal moze DESNO
             self.rect.x += speed
         elif wallsPositions[current_x + 1][current_y] != 0 and self.direction == 'r':
             self.direction = 'l'
 
-        if wallsPositions[current_x - 1][current_y] == 0 and self.direction == 'l': # LEVO
+        if wallsPositions[current_x - 1][current_y] <= 0 and self.direction == 'l': # LEVO
             self.rect.x -= speed
         elif wallsPositions[current_x - 1][current_y] != 0 and self.direction == 'l':
             self.direction = 'u'
 
-        if wallsPositions[current_x][current_y + 1] == 0 and self.direction == 'u': # GORE
+        if wallsPositions[current_x][current_y + 1] <= 0 and self.direction == 'u': # GORE
             self.rect.y += speed
         elif wallsPositions[current_x][current_y + 1] != 0 and self.direction == 'u':
             self.direction = 'd'
 
-        if wallsPositions[current_x][current_y - 1] == 0 and self.direction == 'd': # DOLE
+        if wallsPositions[current_x][current_y - 1] <= 0 and self.direction == 'd': # DOLE
             self.rect.y -= speed
         elif wallsPositions[current_x][current_y - 1] != 0 and self.direction == 'd': # DOLE
             self.direction = 'r'

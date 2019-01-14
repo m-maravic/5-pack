@@ -31,35 +31,28 @@ class Bomberman(pygame.sprite.Sprite):
     def move(self, direction, enemy_list, world):
         if direction == "r":
             if self.case_x < (sirina - 1):
-                if wallsPositions[self.case_x+1][self.case_y] == 0:
+                if wallsPositions[self.case_x+1][self.case_y] == 0 or wallsPositions[self.case_x+1][self.case_y] == -1:
                     self.case_x += 1
                     self.x = self.case_x * iconSize
 
         if direction == "l":
             if self.case_x > 0:
-                if wallsPositions[self.case_x-1][self.case_y] == 0:
+                if wallsPositions[self.case_x-1][self.case_y] == 0 or wallsPositions[self.case_x-1][self.case_y] == -1:
                     self.case_x -= 1
                     self.x = self.case_x * iconSize
 
         if direction == "d":
             #if self.case_y > 0:
-                if wallsPositions[self.case_x][self.case_y+1] == 0:
+                if wallsPositions[self.case_x][self.case_y+1] == 0 or wallsPositions[self.case_x][self.case_y+1] == -1:
                     self.case_y += 1
                     self.y = self.case_y * iconSize
 
         if direction == "u":
             #if self.case_y < (visina - 1):
-                if wallsPositions[self.case_x][self.case_y-1] == 0:
+                if wallsPositions[self.case_x][self.case_y-1] == 0 or wallsPositions[self.case_x][self.case_y-1] == -1:
                     self.case_y -= 1
                     self.y = self.case_y * iconSize
 
-
-    def update(self, enemy_list, world):
-        # ako se sudari sa neprijateljem
-        hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
-
-        if hit_list.__len__() > 0:
-            self.lives_down(world)
 
 
  # score se uvecava kad ubije nekog

@@ -31,6 +31,7 @@ def button(text, x, y, width, height, inactive_color, active_color, action=None)
         pygame.draw.rect(gameDisplay, inactive_color, (x, y, width, height))
 
     text_to_button(text, black, x, y, width, height)
+
 def game_over():
 
     game_over = True
@@ -48,9 +49,9 @@ def game_over():
 
 
 
-        button("play Again", 150,400,150,50, green, light_green, action="playAgain")
-        button("multiplay", 375,400,100,50, yellow, light_yellow, action="multiplay")
-        button("quit", 550,400,100,50, red, light_red, action ="quit")
+        # button("play Again", 150,400,150,50, green, light_green, action="playAgain")
+        # button("multiplay", 375,400,100,50, yellow, light_yellow, action="multiplay")
+        button("quit", 375,400,100,50, red, light_red, action ="quit")
 
 
         pygame.display.update()

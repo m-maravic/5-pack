@@ -11,9 +11,9 @@ class Gifts(pygame.sprite.Sprite):
         self.image.set_colorkey((255,255,255))
         self.rect = self.image.get_rect()
         #kada da se pojavi
-        self.TimeToAppear=random.randint(5,90)*100
+        self.TimeToAppear=random.randint(15,178)*100
         self.provera=True#da bi samo jednom radilo force
-        #self.TimeToStop=10000
+        self.TimeToStop=2000#vreme koje sila ceka da izvrsi dejstvo
         free_spots = find_free_spot()  # lista slobodnih pozicija u matrici
         index = random.randint(0, len(free_spots) - 1)  # uzimamo random index iz liste slobodnih pozicija
 
@@ -23,7 +23,7 @@ class Gifts(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.TimeToAppear-= dt
-        print(self.TimeToAppear)
+       # print(self.TimeToAppear)
     def draw(self, world):
 
         world.blit(self.image, (self.rect.x, self.rect.y))
@@ -35,11 +35,11 @@ class Gifts(pygame.sprite.Sprite):
 
                 if m==1:
                     bomberman.lives_up(world, no)
-                    self.provera = False  #da bi se uklonila clicica tek kad igrac pokupi
+                    #self.provera = False  #da bi se uklonila clicica tek kad igrac pokupi
 
                 if m==2:
                     bomberman.lives_down(world, no)
-                    self.provera = False
+                    #self.provera = False
 
             bomberman.show_lives(world,1)
 
@@ -47,7 +47,10 @@ class Gifts(pygame.sprite.Sprite):
 
     def poziv(self, world, bomberman, dt, no):
         if self.TimeToAppear <= 0:#kada vreme istekne iscrtaj(kad vreme jednom istekne non stop ce ovo ovde prolaziti)
-            self.force(world, bomberman, no)
+            self.TimeToStop-=dt
+            if self.TimeToStop<=0:#ako je proslo 2 sec od pojavljivanja primeni sliu
+                self.provera = False
+                self.force(world, bomberman, no)
 
 
 
