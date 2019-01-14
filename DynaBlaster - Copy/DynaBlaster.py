@@ -36,8 +36,16 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
 
         ok = True
 
-        createWalls()
+        #threads for create walls
+        staticWallThread = Thread(target=createStaticWalls())
+        destroyableWallThread = Thread(target = createDestroyableWalls())
 
+        staticWallThread.start()
+        destroyableWallThread.start()
+
+        staticWallThread.join()
+        destroyableWallThread.join()
+        #createWalls()
 
         bomberman = Bomberman(img,1,1)
         if playersNo == 2:
@@ -48,13 +56,6 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
             enemy = Enemy('enemy.png')
             enemy_list.add(enemy)  # add enemy to group
 
-            # ovaj randint krece od 50 da se ne bi preklapali sa ispisom za SCORE
-            # enemy1 = Enemy('enemy1.png')  # spawn enemy
-            # enemy2 = Enemy('enemy2.png')  # spawn enemy
-            #
-            # enemy_list.add(enemy2)  # add enemy to group
-
-        # test
         bomb_list = pygame.sprite.Group()  # create bomb list
 
         if playersNo == 2:
@@ -194,15 +195,14 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
                     if playersNo == 2:
                         fObjekat.poziv(world, bomberman2, dt, 2)  # za drugog igraca
 
-                    force_list.draw(world)  # onda iscrtaj listu sa tim objektima-samo jeda
+                    force_list.draw(world)  # onda iscrtaj listu sa tim objektima-samo jedna
 
                 # odradjuje
                 # if fObjekat.provera==False:
             if fObjekat.TimeToAppear <= 0:
                 if fObjekat.provera == False:
                     force_list.remove(fObjekat)  # uklanja sa liste da bi se obrisala slika
-                    #force_list.draw(world)  # iscrtava sa ponovo da bi se lista uklonila
-                    force_list.draw(world)  # iscrtava sa ponovo da bi se lista uklonila
+                    force_list.draw(world)  # iscrtava ponovo da bi se sila uklonila
 
             hit_list = pygame.sprite.spritecollide(bomberman, enemy_list, False)
 
@@ -220,8 +220,4 @@ def game_loop(playersNo):  #prosledjujemo broj igraca koji ucestvuju 1 ili 2
                 if bomberman2.total_lives == 0:
                     game_over()
 
-    #game_over()
-    # if __name__ == '__main__':
-    #     app = QApplication(sys.argv)
-    #     ex = ViewWindow()
-    #     sys.exit(app.exec_())
+

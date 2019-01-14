@@ -6,7 +6,7 @@ stWalls_list = pygame.sprite.Group()  # create static walls group
 deWalls_list = pygame.sprite.Group()  # create destroyableWalls group
 
 
-def createWalls():
+def createStaticWalls():
     # iscrtavanje okolnih zidova kroz naredne 2 for petlje
     for x in range(0, worldx, iconSize):
         stWall1 = StaticWall(x, 0)
@@ -30,6 +30,7 @@ def createWalls():
             wallsPositions[round(stWall.rect.x / iconSize)][round(stWall.rect.y / iconSize)] = 1
             stWalls_list.add(stWall)
 
+def createDestroyableWalls():
     for x in range(iconSize, worldx - iconSize, iconSize):
         for y in range(iconSize, worldy - iconSize, iconSize):
             if bool(random.getrandbits(1)):

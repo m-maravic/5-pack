@@ -46,9 +46,9 @@ class Gifts(pygame.sprite.Sprite):
 
 
     def poziv(self, world, bomberman, dt, no):
-        if self.TimeToAppear <= 0:#kada vreme istekne iscrtaj(kad vreme jednom istekne non stop ce ovo ovde prolaziti)
-            self.TimeToStop-=dt
-            if self.TimeToStop<=0:#ako je proslo 2 sec od pojavljivanja primeni sliu
+        if self.TimeToAppear <= 0: #kada vreme istekne iscrtaj(kad vreme jednom istekne non stop ce ovo ovde prolaziti)
+            self.TimeToStop -= dt
+            if self.TimeToStop <= 0: #ako je proslo 2 sec od pojavljivanja primeni silu
                 self.provera = False
                 self.force(world, bomberman, no)
 

@@ -16,17 +16,6 @@ def button(text, x, y, width, height, inactive_color, active_color, action=None)
             if action == "quit":
                 pygame.quit()
                 quit()
-
-            if action == "multiplay":#ovde bih stavila multiplay
-                game_loop(2)
-
-            if action == "playAgain":
-                game_loop(1)
-
-            if action == "menu":
-                pass
-                #game_intro()
-
     else:
         pygame.draw.rect(gameDisplay, inactive_color, (x, y, width, height))
 
@@ -47,12 +36,9 @@ def game_over():
         message_to_screen("Game Over",green,-100,size="large")
         message_to_screen("You died.",black,-30)
 
-
-
         # button("play Again", 150,400,150,50, green, light_green, action="playAgain")
         # button("multiplay", 375,400,100,50, yellow, light_yellow, action="multiplay")
         button("quit", 375,400,100,50, red, light_red, action ="quit")
-
 
         pygame.display.update()
 
@@ -78,7 +64,6 @@ def you_win():
         button("play Again", 150,500,150,50, green, light_green, action="play")
         button("controls", 350,500,100,50, yellow, light_yellow, action="controls")
         button("quit", 550,500,100,50, red, light_red, action ="quit")
-
 
         pygame.display.update()
 

@@ -3,13 +3,13 @@ from DynaBlaster import *
 import time
 import random
 from definitions import *
+from multiprocessing import Process, Pipe
 
 pygame.init()
 
 def button(text, x, y, width, height, inactive_color, active_color, action=None):
     cur = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
-    # print(click)
     if x + width > cur[0] > x and y + height > cur[1] > y:
         pygame.draw.rect(gameDisplay, active_color, (x, y, width, height))
         if click[0] == 1 and action != None:
@@ -28,34 +28,11 @@ def button(text, x, y, width, height, inactive_color, active_color, action=None)
 
     text_to_button(text, black, x, y, width, height)
 
-
-def pause():
-    paused = True
-    message_to_screen("Paused", black, -100, size="large")
-    message_to_screen("Press C to continue playing or Q to quit", black, 25)
-    pygame.display.update()
-    while paused:
-        for event in pygame.event.get():
-
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_c:
-                    paused = False
-                elif event.key == pygame.K_q:
-                    pygame.quit()
-                    quit()
-
-        clock.tick(5)
-
-
 def game_intro():
     intro = True
 
     while intro:
         for event in pygame.event.get():
-            # print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
@@ -83,5 +60,13 @@ def game_intro():
 
         clock.tick(15)
 
-game_intro()
+def main():
+     play_game = Process(target = game_intro())
+     play_game.daemon = True
+     play_game.start()
+
+if __name__ == '__main__':
+     main()
+
+
 
